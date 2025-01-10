@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche de Recettes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <img src="image-du-header.jpg" alt="image-du-header">
+        <h1>CHERCHER PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET DELICIEUSES</h1>
+        <div class="search-bar-container">
+            <input type="text" id="search-bar-input" placeholder="Rechercher une recette..." aria-label="Barre de recherche pour les recettes">
+            <svg             
+                xmlns="http://www.w3.org/2000/svg" 
+                class="search-icon" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                stroke-width="1" 
+                stroke-linecap="round" 
+                stroke-linejoin="round">
+                <circle cx="10.4" cy="10.4" r="5.4" fill="none"></circle>
+                <line x1="19" y1="19" x2="15.4" y2="15.4"></line>
+            </svg>
+        </div>
+    </header>
+
+    <main>
+        <div id="rechercheAvancee">
+            <div class="listContainer">
+                <div class="listContainer-header">
+                    <span>Ingredients</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ingredients-arrow" viewBox="0 0 24 16" fill="none" 
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="16" x2="0" y2="0"></line>
+                        <line x1="12" y1="16" x2="24" y2="0"></line>
+                    </svg>
+                </div>
+                <ul id="ingredientsUL" class="ingredientsUL" role="listbox" tabindex="0"></ul>    
+            </div>
+            <div class="listContainer">
+                <div class="listContainer-header">
+                    <span>Appareils</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ingredients-arrow" viewBox="0 0 24 16" fill="none" 
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="16" x2="0" y2="0"></line>
+                        <line x1="12" y1="16" x2="24" y2="0"></line>
+                    </svg>
+                </div>
+                <ul id="appareilsUL" class="appareilsUL" role="listbox" tabindex="0"></ul>    
+            </div>
+            <div class="listContainer">
+                <span>Ustensiles</span>
+            </div>
+            <div class="lastListContainer">
+                <span>Recettes</span>
+            </div>
+        </div>
+        <div id="recipes-container" class="recipes-container">
+            <!-- Les recettes filtrées s'affichent ici -->
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

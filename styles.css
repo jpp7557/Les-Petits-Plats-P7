@@ -1,0 +1,264 @@
+:root {
+    --main-margin: 10vw;
+    --header-height: 660px;
+
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0 auto;
+    padding: 0;
+    line-height: 1.6;
+    background-color: #d1cfcf;
+    color: #333;
+    width: 80vw;
+    max-width: 1440px; /* Limite la largeur de la page */
+    box-sizing: border-box;
+}
+
+/* Centrage et style de la barre de recherche */
+header {
+    width: 80vw;
+    background-color: #351ff5;
+    color: white;
+    padding: 0;
+    text-align: center;
+    height: 665px;
+    margin-left: -5px;
+}
+
+header img {
+    position : absolute;
+    top: 0;
+    left: 10vw;
+    width: 80vw;
+    max-width: 1440px; /* Limite la largeur de la page */
+    height: 660px;
+    object-fit: cover;
+    z-index: 0;
+}
+
+header h1 {
+    position: relative;
+    top: 320px;
+    font-family: 'Arial';
+    font-size: 1.5em;
+    font-weight: bold;
+    line-height: 1.4;
+    width: 55vw;
+    color:hsla(49, 96%, 53%, 0.937);
+    margin: auto;
+    z-index: 10;
+    letter-spacing: -0.5px; /* Espacement réduit */
+}
+
+header input {
+    width: 60vw;
+    max-width: 954px; /* Largeur spécifique */
+    height: 24px; /* Hauteur spécifique */
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    margin: 0 auto; /* Centrage horizontal */
+    display: block;
+}
+
+.search-bar-container {
+    position: relative; /* Pour positionner l'icône par rapport au conteneur */
+    top: 320px;
+    max-width: 954px; /* Largeur spécifique */
+    width: 60vw;
+    height: 38px; /* Hauteur spécifique */
+    margin: 0 auto; /* Centré horizontalement */
+    border-radius: 5px;
+    overflow: hidden; /* Pour garder l'icône à l'intérieur du champ */
+    background: white;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 16px;
+}
+
+/* Champ de saisie */
+#search-bar-input {
+    flex: 1; /* Occupe tout l'espace sauf celui réservé pour l'icône */
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 10px 20px 10px 20px; /* Espacement interne */
+    font-size: 18px;
+    box-sizing: border-box;
+    border-radius: 5px 0 0 5px; /* Garde les coins arrondis à gauche */
+}
+
+.search-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 5px; /* Espace entre l'icône et le bord droit */
+    fill: white; /* Couleur de l'icône */
+    pointer-events: none; /* Empêche l'interaction avec l'icône */
+    background-color: black;
+    border-radius: 5px; /* Garde les coins arrondis à gauche */
+}
+
+#rechercheAvancee {
+    display: grid;
+    grid-template-columns: 120px 120px 120px 0.95fr;
+    column-gap: 10px;
+    width: calc(100% - 20px);
+    background-color: #f51ff0;
+    padding: 0 0 0 20px;
+    margin: 0;
+}
+
+.listContainer {
+    width: 110px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 5px 0 0 8px;
+    background-color: #f9f9f9;
+    margin-top: 16px;
+}
+  
+.listContainer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+  
+.listContainer-header span {
+    flex: 1;
+    font-size: 0.8rem;
+}
+  
+.ingredients-arrow {
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+    margin-right: 12px;
+}
+  
+.ingredientsUL {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+  
+.ingredientsUL li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+  
+.ingredientsUL li:last-child {
+    border-bottom: none;
+}
+
+.lastListContainer {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 5px 0 0 8px;
+    background-color: #f9f9f9;
+    margin-top: 16px;
+    align-items: right;
+}
+
+/* Conteneur des recettes */
+.recipes-container {
+    position: relative;
+    top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Aligne les recettes au centre */
+    padding: 20px;
+}
+
+/* Carte individuelle de recette */
+.recette-card {
+    font-family: 'Arial', sans-serif;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 28%; /* pour afficher 3 cartes par rangée */
+    height: auto;
+    max-width: 400px; /* Largeur maximale pour éviter de trop grandes cartes */
+    max-height: 700px;
+    padding: 15px;
+    padding-top: 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.recette-card img {
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    margin-right: -15px;
+    height: 33%;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.recette-card h2 {
+    font-family: Helvetica, sans-serif;
+    margin: 10px 0;
+    font-size: 18px;
+    letter-spacing: -1.5px; /* Espacement réduit */
+    text-align: left;
+}
+.recette-card h3 {
+    font-family: Helvetica, sans-serif;
+    color: #666;
+    font-size: 12px;
+    letter-spacing: -0.8px; /* Espacement réduit */
+    margin-top: 24px;
+    text-align: left;
+}
+
+.recette-card p {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #666;
+    max-height: 5em;
+    overflow:hidden;
+    text-align: left;
+    margin-top: 0;
+}
+
+.recette-card .recette,
+.recette-card .ingredients-container {
+    letter-spacing: -0.2px; /* Espacement réduit */
+}
+
+.ingredients-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+}
+.ingredients-list {
+    font-size: 14px;
+    line-height: 1.2;
+    list-style-type: none; /* Supprime les puces */
+    padding: 0; /* Retire le padding par défaut du <ul> */
+    margin: 0; /* Retire la marge par défaut du <ul> */
+    text-align: left;
+}
+
+.ingredients-list li {
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.ingredient-name {
+    color: #222;
+}
+
+/* Pied de page */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #333;
+    color: white;
+}
