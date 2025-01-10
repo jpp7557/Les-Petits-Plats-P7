@@ -1875,3 +1875,32 @@ searchBarInput.addEventListener('input', (e) => {
 
 // Initialisation - Affiche toutes les recettes au chargement
 displayRecipes(recipes);
+
+const dropdownButton = document.querySelector('.dropdown-button');
+const dropdownContent = document.querySelector('.dropdown-content');
+
+// ouvrir/fermer la liste déroulante
+function toggleDropdown() {
+    dropdownContent.classList.toggle('open');
+    const isOpen = dropdownContent.classList.contains('open');
+    dropdownContent.setAttribute('aria-hidden', !isOpen);
+}
+
+
+// fermer la liste si on clique à l'extérieur
+function closeDropdown(event) {
+    if (!dropdownContent.contains(event.target) && !dropdownButton.contains(event.target)) {
+        dropdownContent.classList.remove('open');
+        dropdownContent.setAttribute('aria-hidden', true);
+    }
+}
+
+// Ajoute l'événement de clic au bouton
+dropdownButton.addEventListener('click', (event) => {
+    //event.stopPropagation(); // Empêche la fermeture immédiate
+    console.log("** CLICK, **CLICK");
+    toggleDropdown();
+});
+
+// "clic à l'extérieur de la list" declenche la fermeture
+document.addEventListener('click', closeDropdown);

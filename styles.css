@@ -168,6 +168,69 @@ header input {
     font-weight: bold;
 }
 
+/********************************************************/
+
+/* Style général */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.dropdown-button:hover {
+    background-color: #2980b9;
+}
+
+.dropdown-content {
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    padding: 10px;
+    border-radius: 5px;
+        /* Animation */
+        opacity: 0;
+        visibility: hidden;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+
+}
+
+.dropdown-content.open {
+    opacity: 1;
+    visibility: visible;
+    transform: scaleY(1);
+}
+
+.dropdown-content label {
+    display: block;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.dropdown-content label:hover {
+    background-color: #f1f1f1;
+}
+
+/* Affiche la liste déroulante lorsque l'utilisateur clique */
+/*.dropdown:hover .dropdown-content {
+    display: block;
+}*/
+
+/********************************************************/
+
 /* Conteneur des recettes */
 .recipes-container {
     position: relative;
