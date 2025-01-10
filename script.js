@@ -1779,6 +1779,7 @@ const recipes = [
 // Référence aux éléments HTML
 const searchBarInput = document.getElementById('search-bar-input');
 const recipesContainer = document.getElementById('recipes-container');
+const nbRecettesTrouvees = document.getElementById('nbRecettes');
 
 // Fonction pour afficher les recettes
 function displayRecipes(filteredRecipes) {
@@ -1787,7 +1788,7 @@ function displayRecipes(filteredRecipes) {
         recipesContainer.innerHTML = '<p>Aucune recette trouvée.</p>';
         return;
     }
-
+    nbRecettesTrouvees.textContent = `${filteredRecipes.length} Recettes`;
     filteredRecipes.forEach(recipe => {        
         
         imgsource = recipe.id < 10 ? `Recette0${recipe.id}.jpg` : `Recette${recipe.id}.jpg`
@@ -1847,9 +1848,15 @@ function filterRecipes(query) {
 
 function addIngredientsToList(filteredRecipes) {
     const ingregientsUl = document.querySelector('.ingredientsUL');
-
     const ingredientLi = document.createElement('li');
 
+    const allIngredients = filteredRecipes.flatMap(recipe => 
+        recipe.ingredients.map(item => item.ingredient)
+    );
+    console.log("Les ingrédients de toutes les recelltes sont :", allIngredients);
+    let newList = [...new Set(allIngredients)];
+    console.log("Les ingrédients sans doublons de toutes les recelltes :", newList);
+    return newList;
 
 }
 
@@ -1860,7 +1867,7 @@ searchBarInput.addEventListener('input', (e) => {
         const filteredRecipes = filterRecipes(query);
         displayRecipes(filteredRecipes);
         console.log("**** filteredRecipes : ", filteredRecipes);
-        console.log("ingredients : ", filteredRecipes.ingredients);
+        console.log("list des ingrédients SANS doublons: ", addIngredientsToList(filteredRecipes));
     } else {
         displayRecipes(recipes); // Affiche toutes les recettes si moins de 3 caractères
     }

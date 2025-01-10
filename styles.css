@@ -8,7 +8,7 @@ body {
     margin: 0 auto;
     padding: 0;
     line-height: 1.6;
-    background-color: #d1cfcf;
+    background-color: #464545;
     color: #333;
     width: 80vw;
     max-width: 1440px; /* Limite la largeur de la page */
@@ -22,7 +22,7 @@ header {
     color: white;
     padding: 0;
     text-align: center;
-    height: 665px;
+    height: 605px;
     margin-left: -5px;
 }
 
@@ -32,7 +32,7 @@ header img {
     left: 10vw;
     width: 80vw;
     max-width: 1440px; /* Limite la largeur de la page */
-    height: 660px;
+    height: 600px;
     object-fit: cover;
     z-index: 0;
 }
@@ -103,16 +103,15 @@ header input {
 
 #rechercheAvancee {
     display: grid;
-    grid-template-columns: 120px 120px 120px 0.95fr;
+    grid-template-columns: 1fr 1fr 1fr 5fr;
     column-gap: 10px;
     width: calc(100% - 20px);
-    background-color: #f51ff0;
+    background-color: #bebebe;
     padding: 0 0 0 20px;
     margin: 0;
 }
 
 .listContainer {
-    width: 110px;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 5px 0 0 8px;
@@ -155,24 +154,30 @@ header input {
 }
 
 .lastListContainer {
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    width: 95%;
+    border: none;
     padding: 5px 0 0 8px;
-    background-color: #f9f9f9;
+    background-color: #bebebe;
     margin-top: 16px;
-    align-items: right;
+    display: flex;
+    justify-content: right;
+}
+
+#nbRecettes {
+    margin-right: 20px;
+    font-weight: bold;
 }
 
 /* Conteneur des recettes */
 .recipes-container {
     position: relative;
-    top: 10px;
+    top: 0px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center; /* Aligne les recettes au centre */
     padding: 20px;
+    background-color: #bebebe;
 }
 
 /* Carte individuelle de recette */
