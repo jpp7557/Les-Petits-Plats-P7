@@ -28,7 +28,7 @@ function displayRecipes(filteredRecipes) {
                 <h3>INGREDIENTS</h3>
                 <ul class="ingredients-list">
             `;
-        // Ajout dynamique des ingrédients à la liste
+        // Ajout dynamique des ingrédients à la carte
                 recipe.ingredients.forEach(item => {
                     let unitSiExist;
                     let quantitySiExist;
@@ -42,6 +42,7 @@ function displayRecipes(filteredRecipes) {
                     quantitySiExist = (!item.quantity) ? "" : item.quantity;
                     recipeHTML += `<li><span class="ingredient-name">${item.ingredient}</span><br>${quantitySiExist} ${unitSiExist}</li>`;
                 });
+        // Ajout dynamique des ingrédients à la dropdown list ingredientsUL
 
         // Fermeture de la liste et du conteneur
         recipeHTML += `
@@ -71,6 +72,34 @@ function filterRecipes(query) {
     return resultat;
 }
 
+///////////////////////////////////////////////////////////////////////
+// Mettre des ingredients dans dropdownContent 
+function updateIngredientLabels(filteredRecipes) {
+    const dropdownContent = document.querySelector('.ingredients-content');
+    dropdownContent.innerHTML = ''; // Vider les anciens labels
+
+    // Récupérer tous les ingrédients, il peut y avoir des doublons dans cette liste
+    const allIngredients = filteredRecipes.flatMap(recipe => 
+        recipe.ingredients.map(item => item.ingredient)
+    );
+    const uniqueIngredients = [...new Set(allIngredients)]; // Supprime les doublons
+
+    // Générer les labels dynamiquement pour dropdownContent
+    uniqueIngredients.forEach(ingredient => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = ingredient;
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(` ${ingredient}`));
+        dropdownContent.appendChild(label);
+    });
+}
+
+
+
+////////////////////////////////////////////////////////////////////////
+
 function addIngredientsToList(filteredRecipes) {
     const ingregientsUl = document.querySelector('.ingredientsUL');
     const ingredientLi = document.createElement('li');
@@ -94,6 +123,9 @@ searchBarInput.addEventListener('input', (e) => {
         displayRecipes(filteredRecipes);
         console.log("**** filteredRecipes : ", filteredRecipes);
         console.log("list des ingrédients SANS doublons: ", addIngredientsToList(filteredRecipes));
+        ////////////////////
+        updateIngredientLabels(filteredRecipes); // Met à jour les labels
+        ///////////////////
     } else {
         nbRecettesTrouvees.textContent = `${recipes.length} Recettes`;
         displayRecipes(recipes); // Affiche toutes les recettes si moins de 3 caractères
@@ -103,8 +135,11 @@ searchBarInput.addEventListener('input', (e) => {
 // Initialisation - Affiche toutes les recettes au chargement
 displayRecipes(recipes);
 
+// Effacer le contenu de la barre input
+searchBarInput.value = '';
+
 const dropdownButton = document.querySelector('.dropdown-button');
-const dropdownContent = document.querySelector('.dropdown-content');
+const dropdownContent = document.querySelector('.ingredients-content');
 
 // ouvrir/fermer la liste déroulante
 function toggleDropdown() {

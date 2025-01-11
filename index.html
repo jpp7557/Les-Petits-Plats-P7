@@ -29,27 +29,18 @@
 
     <main>
         <div id="rechercheAvancee">
-            <div class="listContainer">
-                <div class="listContainer-header">
+            <div class="dropdown">
+                <button class="dropdown-button">
                     <span>Ingredients</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="ingredients-arrow" viewBox="0 0 24 16" fill="none" 
+                    <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-arrow" viewBox="0 0 24 16" fill="none" 
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="16" x2="0" y2="0"></line>
                         <line x1="12" y1="16" x2="24" y2="0"></line>
                     </svg>
-                </div>
-                <ul id="ingredientsUL" class="ingredientsUL" role="listbox" tabindex="0"></ul>
-                
-                <div class="dropdown">
-                    <button class="dropdown-button">ingrédients</button>
-                    <div class="dropdown-content" aria-hidden="false">
-                        <label><input type="checkbox" value="Poulet"> Poulet</label>
-                        <label><input type="checkbox" value="Curry"> Curry</label>
-                        <label><input type="checkbox" value="Lait de coco"> Lait de coco</label>
-                        <label><input type="checkbox" value="Pommes"> Pommes</label>
-                        <label><input type="checkbox" value="Sucre"> Sucre</label>
-                        <label><input type="checkbox" value="Pâte feuilletée"> Pâte feuilletée</label>
-                    </div>
+                </button>
+                <div class="ingredients-content" aria-hidden="false">
+                    <label><input type="checkbox" value="Poulet"> Poulet</label>
+                    <label><input type="checkbox" value="Curry"> Curry</label>
                 </div>
             </div>
             <div class="listContainer">

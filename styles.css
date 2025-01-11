@@ -171,26 +171,44 @@ header input {
 /********************************************************/
 
 /* Style général */
-.dropdown {
+#dropdownIngredients {
     position: relative;
     display: inline-block;
 }
 
 .dropdown-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
     background-color: #3498db;
     color: white;
-    padding: 10px;
+    width: 120px;
+    padding: 10px 0 10px 8px;
+    margin-top: 16px;
     border: none;
     cursor: pointer;
-    font-size: 16px;
     border-radius: 5px;
+}
+
+.dropdown-button span {
+    flex: 1;
+    font-size: 0.8rem;
+    text-align: left;
+}
+
+.dropdown-arrow {
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+    margin-right: 12px;
 }
 
 .dropdown-button:hover {
     background-color: #2980b9;
 }
 
-.dropdown-content {
+.ingredients-content {
     position: absolute;
     background-color: white;
     min-width: 200px;
@@ -208,19 +226,19 @@ header input {
 
 }
 
-.dropdown-content.open {
+.ingredients-content.open {
     opacity: 1;
     visibility: visible;
     transform: scaleY(1);
 }
 
-.dropdown-content label {
+.ingredients-content label {
     display: block;
     padding: 5px;
     cursor: pointer;
 }
 
-.dropdown-content label:hover {
+.ingredients-content label:hover {
     background-color: #f1f1f1;
 }
 
