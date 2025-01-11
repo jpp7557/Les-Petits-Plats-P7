@@ -73,6 +73,12 @@ function filterRecipes(query) {
 }
 
 ///////////////////////////////////////////////////////////////////////
+
+//// 2.0  open
+const selectedIngredientsContainer = document.getElementById('selected-ingredients-container');
+let selectedIngredients = []; // Stocke les ingrédients choisis
+//// 2.0  close
+
 // Mettre des ingredients dans dropdownContent 
 function updateIngredientLabels(filteredRecipes) {
     const dropdownContent = document.querySelector('.ingredients-content');
@@ -90,29 +96,106 @@ function updateIngredientLabels(filteredRecipes) {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = ingredient;
+
+//// 2.0  open
+
+////// 3.0 Open
+        // Si l'ingrédient est déjà sélectionné, cochez la case
+        if (selectedIngredients.includes(ingredient)) {
+            checkbox.checked = true;
+        }
+////// 3.0 close
+
+      // Gestion du clic sur un ingrédient
+      checkbox.addEventListener('click', () => {
+////// 3.0 Open     
+      if (checkbox.checked) {
+        // Ajouter l'ingrédient s'il n'est pas déjà sélectionné
+        if (!selectedIngredients.includes(ingredient)) {
+            selectedIngredients.push(ingredient);
+            addSelectedIngredientBox(ingredient); // Ajouter la boîte correspondante
+        }
+    } else {
+        // Retirer l'ingrédient s'il est décoché
+        selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
+        removeSelectedIngredientBox(ingredient); // Supprimer la boîte correspondante
+    }
+    updateRecipesAndIngredients(); // Mettre à jour les recettes et les ingrédients
+});
+////// 3.0 close
+
+/*////// 3.0 Open 
+      checkbox.addEventListener('click', () => {
+        if (!selectedIngredients.includes(ingredient)) {
+            selectedIngredients.push(ingredient); // Ajouter l'ingrédient au tableau
+            addSelectedIngredientBox(ingredient); // Ajouter la boîte correspondante
+            updateRecipesAndIngredients(); // Mettre à jour les recettes et les ingrédients
+        }
+        toggleDropdown(); // Fermer la liste déroulante
+    });
+//// 2.0 close
+*/
+
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(` ${ingredient}`));
         dropdownContent.appendChild(label);
     });
 }
 
+////// 3.0 open
+
+function removeSelectedIngredientBox(ingredient) {
+    const boxes = selectedIngredientsContainer.querySelectorAll('.selected-ingredient-box');
+    boxes.forEach(box => {
+        if (box.textContent.trim().startsWith(ingredient)) {
+            box.remove();
+        }
+    });
+}
+////// 3.0 close
+
+//// 2.0 open
+
+// Ajouter une boîte pour afficher un ingrédient sélectionné
+function addSelectedIngredientBox(ingredient) {
+    const ingredientBox = document.createElement('div');
+    ingredientBox.classList.add('selected-ingredient-box');
+    ingredientBox.textContent = ingredient;
+
+    // Ajouter un bouton pour supprimer l'ingrédient
+    const removeButton = document.createElement('button');
+    removeButton.textContent = 'X';
+    removeButton.addEventListener('click', () => {
+        selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
+        ingredientBox.remove(); // Supprimer la boîte
+        updateRecipesAndIngredients(); // Mettre à jour les recettes et ingrédients
+    });
+
+    ingredientBox.appendChild(removeButton);
+    selectedIngredientsContainer.appendChild(ingredientBox);
+}
+
+// Mettre à jour les recettes et ingrédients en fonction des critères sélectionnés
+function updateRecipesAndIngredients() {
+    // Filtrer les recettes en fonction des ingrédients sélectionnés
+    const filteredRecipes = recipes.filter(recipe =>
+        selectedIngredients.every(selectedIngredient =>
+            recipe.ingredients.some(item => item.ingredient === selectedIngredient)
+        )
+    );
+        // Afficher les recettes filtrées
+        nbRecettesTrouvees.textContent = `${filteredRecipes.length} Recettes`;
+        displayRecipes(filteredRecipes);
+
+        // Mettre à jour les ingrédients dans la liste déroulante
+        updateIngredientLabels(filteredRecipes);
+
+    }
+
+//// 2.0 close
 
 
 ////////////////////////////////////////////////////////////////////////
-
-function addIngredientsToList(filteredRecipes) {
-    const ingregientsUl = document.querySelector('.ingredientsUL');
-    const ingredientLi = document.createElement('li');
-
-    const allIngredients = filteredRecipes.flatMap(recipe => 
-        recipe.ingredients.map(item => item.ingredient)
-    );
-    console.log("Les ingrédients de toutes les recelltes sont :", allIngredients);
-    let newList = [...new Set(allIngredients)];
-    console.log("Les ingrédients sans doublons de toutes les recelltes :", newList);
-    return newList;
-
-}
 
 // sur la barre de recherche
 searchBarInput.addEventListener('input', (e) => {
@@ -122,7 +205,6 @@ searchBarInput.addEventListener('input', (e) => {
         nbRecettesTrouvees.textContent = `${filteredRecipes.length} Recettes`;
         displayRecipes(filteredRecipes);
         console.log("**** filteredRecipes : ", filteredRecipes);
-        console.log("list des ingrédients SANS doublons: ", addIngredientsToList(filteredRecipes));
         ////////////////////
         updateIngredientLabels(filteredRecipes); // Met à jour les labels
         ///////////////////
@@ -131,12 +213,6 @@ searchBarInput.addEventListener('input', (e) => {
         displayRecipes(recipes); // Affiche toutes les recettes si moins de 3 caractères
     }
 });
-
-// Initialisation - Affiche toutes les recettes au chargement
-displayRecipes(recipes);
-
-// Effacer le contenu de la barre input
-searchBarInput.value = '';
 
 const dropdownButton = document.querySelector('.dropdown-button');
 const dropdownContent = document.querySelector('.ingredients-content');
@@ -166,3 +242,11 @@ dropdownButton.addEventListener('click', (event) => {
 
 // "clic à l'extérieur de la list" declenche la fermeture
 document.addEventListener('click', closeDropdown);
+
+// Initialisation - Affiche toutes les recettes au chargement
+displayRecipes(recipes);
+updateIngredientLabels(recipes); // Mettre les ingredients dans la list 
+
+// Effacer le contenu de la barre input
+searchBarInput.value = '';
+
