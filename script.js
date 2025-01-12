@@ -106,14 +106,14 @@ function updateIngredientLabels(filteredRecipes) {
         }
 ////// 3.0 close
 
-      // Gestion du clic sur un ingrédient
-      checkbox.addEventListener('click', () => {
+    // Gestion du clic sur un ingrédient (ou son checkbox)
+    checkbox.addEventListener('click', () => {
 ////// 3.0 Open     
-      if (checkbox.checked) {
+    if (checkbox.checked) {
         // Ajouter l'ingrédient s'il n'est pas déjà sélectionné
         if (!selectedIngredients.includes(ingredient)) {
             selectedIngredients.push(ingredient);
-            addSelectedIngredientBox(ingredient); // Ajouter la boîte correspondante
+            addSelectedIngredientBox(ingredient); // Ajouter un box avec l'ingredient selectionné
         }
     } else {
         // Retirer l'ingrédient s'il est décoché
@@ -156,13 +156,13 @@ function removeSelectedIngredientBox(ingredient) {
 
 //// 2.0 open
 
-// Ajouter une boîte pour afficher un ingrédient sélectionné
+// Ajouter une div pour afficher un ingrédient sélectionné
 function addSelectedIngredientBox(ingredient) {
     const ingredientBox = document.createElement('div');
     ingredientBox.classList.add('selected-ingredient-box');
     ingredientBox.textContent = ingredient;
 
-    // Ajouter un bouton pour supprimer l'ingrédient
+    // Ajouter une croix pour supprimer l'ingrédient
     const removeButton = document.createElement('button');
     removeButton.textContent = 'X';
     removeButton.addEventListener('click', () => {

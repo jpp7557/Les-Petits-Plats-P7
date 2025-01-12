@@ -227,6 +227,8 @@ header input {
 }
 
 .ingredients-content.open {
+    max-height: 20em;
+    overflow: scroll;
     opacity: 1;
     visibility: visible;
     transform: scaleY(1);
