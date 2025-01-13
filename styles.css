@@ -220,7 +220,7 @@ header input {
         /* Animation */
         opacity: 0;
         visibility: hidden;
-        transform: scaleY(0);
+        transform: scaleY(0); /*0 :la liste est complètement aplatie verticalement,donc invisible */
         transform-origin: top;
         transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 
@@ -231,7 +231,7 @@ header input {
     overflow: scroll;
     opacity: 1;
     visibility: visible;
-    transform: scaleY(1);
+    transform: scaleY(1); /* ouverture de la liste */
 }
 
 .ingredients-content label {
@@ -258,17 +258,17 @@ header input {
     background-color: #bebebe;
 }
 
-.selected-ingredient-box {
+.selected-ingredient-tag {
     padding: 5px 10px;
     background-color: #f5e485;
     border: 1px solid #ccc;
     border-radius: 4px;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
 }
 
-.selected-ingredient-box button {
+.selected-ingredient-tag button {
     background: none;
     border: none;
     color: red;
