@@ -220,11 +220,13 @@ searchBarInput.addEventListener('input', (e) => {
     if (query.length >= 3) {
         const filteredRecipes = filterRecipes(query);
         nbRecettesTrouvees.textContent = `${filteredRecipes.length} Recettes`;
+    ////////////////////
+    console.time("Excution Time");
         displayRecipes(filteredRecipes);
+    console.timeEnd("Excution Time");
+    ///////////////////
         console.log("query >=3 **** filteredRecipes : ", filteredRecipes);
-        ////////////////////
         updateIngredientLabels(filteredRecipes); // Met à jour les labels
-        ///////////////////
     } else {
         nbRecettesTrouvees.textContent = `${recipes.length} Recettes`;
         displayRecipes(recipes); // Affiche toutes les recettes si moins de 3 caractères
