@@ -68,7 +68,7 @@ function filterRecipes(query) {
         );
         return nameMatch || descriptionMatch || ingredientsMatch;
     });
-    console.log("filterRecipes : resultat de filterRecipes", resultat);
+    console.log("filterRecipes result :", resultat);
     return resultat;
 }
 
@@ -106,7 +106,7 @@ function updateIngredientLabels(filteredRecipes) {
     ingredientList.classList.add('ingredient-list');
     dropdownContent.appendChild(ingredientList);
     
-    // Function to display filtered ingredients
+    // Function pour afficher les ingredients correspondants aux critères de tri
     function displayIngredients(filtered) {
         ingredientList.innerHTML = ''; // Clear existing list
 
