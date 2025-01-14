@@ -57,8 +57,6 @@ function displayRecipes(filteredRecipes) {
 }
 
 function isIngredientTagsEmpty() {
-    console.log("ingreTags");
-
     return !selectedIngredientsContainer.hasChildNodes();
 }
 

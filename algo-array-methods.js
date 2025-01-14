@@ -1,11 +1,9 @@
 // algo avec les methodes array
 function filterRecipes(query) {
-    console.log("*** Algorithm filterRecipes");
     let resultat;
     let recipesList = recipes;
     query = query.toLowerCase();
     // Filtrer les recettes en fonction des ingrédients sélectionnés
-    console.log("IN filterRecipes tags Not EMPTY ? ", !isIngredientTagsEmpty());
     if (!isIngredientTagsEmpty()) {
         const filteredRecipes = recipes.filter(recette =>
             selectedIngredients.every(selectedIngredient =>
@@ -22,6 +20,6 @@ function filterRecipes(query) {
         );
         return nameMatch || descriptionMatch || ingredientsMatch;
     });
-    console.log("    ** Result Nb RECETTES: ", resultat.length);
+    console.log("** Algorithm filterRecipes Result Nb RECETTES: ", resultat.length);
     return resultat;
 }
