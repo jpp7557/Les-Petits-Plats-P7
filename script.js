@@ -62,8 +62,9 @@ function isIngredientTagsEmpty() {
     return !selectedIngredientsContainer.hasChildNodes();
 }
 
+//////////////////////
 // Fonction pour filtrer les recettes
-function filterRecipes(query) {
+/*function filterRecipes(query) {
     console.log("*** Algorithm filterRecipes");
     let resultat;
     let recipesList = recipes;
@@ -89,7 +90,8 @@ function filterRecipes(query) {
     console.log("    ** Result Nb RECETTES: ", resultat.length);
     return resultat;
 }
-
+*/
+///////////////////////
 
 const selectedIngredientsContainer = document.getElementById('selected-ingredients-container');
 let selectedIngredients = []; // Liste des ingrédients selectionnes
