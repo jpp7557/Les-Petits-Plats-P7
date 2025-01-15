@@ -214,17 +214,27 @@ function removeSelectedIngredientTag(ingredient) {
     });
 }
 
-
-// Mettre à jour les recettes et ingrédients en fonction des critères sélectionnés
-function updateRecipesAndIngredients() {
-    console.log("*** updateRecipesAndIngredients");
-    // Filtrer les recettes en fonction des ingrédients sélectionnés
-    const filteredRecipes = recipes.filter(recette =>
+// MAJ de Array des recettes en fonction des ingrédients selectionnés 
+function selectedRecette(selectedIngredients) {
+    let result = [];
+    result = recipes.filter(recette =>
         selectedIngredients.every(selectedIngredient =>
             recette.ingredients.some(item => item.ingredient === selectedIngredient) // item étant l'ensemble des ingrédients d'une recette
         )
     );
+    return result;
+}
 
+// Fonction de MAJ des recettes et ingrédients en fonction des critères sélectionnés
+function updateRecipesAndIngredients() {
+    console.log("*** updateRecipesAndIngredients");
+    // Filtrer les recettes en fonction des ingrédients sélectionnés
+    const filteredRecipes = selectedRecette(selectedIngredients);
+
+    console.log("in updateRecipesAndIngredients(): filteredRecipes length :", filteredRecipes.length);
+    for( let i = 0; i < filteredRecipes.length; i++ ) {
+        console.log("         filteredRecipes : ", filteredRecipes[i].name);
+    }
     // Afficher les recettes filtrées
     displayRecipes(filteredRecipes);
 
