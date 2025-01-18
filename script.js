@@ -126,9 +126,10 @@ function updateIngredientLabels(filteredRecipes) {
     
     // Function pour afficher les ingredients correspondants aux critères de tri
     function displayIngredients(filtered) {
-        console.log("*** displayIngredients");
+        console.log("***  displayIngredients");
         ingredientList.innerHTML = ''; // Clear existing list
 
+        console.log("*** displayIngredients, length BEFORE filter:",filtered.length);
         // Generate labels for filtered ingredients
         filtered.forEach(ingredient => {
             const label = document.createElement('label');
@@ -149,12 +150,12 @@ function updateIngredientLabels(filteredRecipes) {
                 // Ajouter l'ingrédient s'il n'est pas déjà sélectionné
                 if (!selectedIngredients.includes(ingredient)) {
                     selectedIngredients.push(ingredient);
-                    addSelectedIngredientTag(ingredient); // Ajouter un box avec l'ingredient selectionné
+                    addSelectedIngredientTag(ingredient); // Ajouter un tag (box) avec l'ingredient selectionné
                 }
             } else {
                 // Retirer l'ingrédient s'il est décoché
                 selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
-                removeSelectedIngredientTag(ingredient); // Supprimer le tag correspondante
+                removeSelectedIngredientTag(ingredient); // Supprimer le tag (box) correspondant
             }
             updateRecipesAndIngredients(); // Mettre à jour les recettes et les ingrédients
 
@@ -168,15 +169,17 @@ function updateIngredientLabels(filteredRecipes) {
     }
 
     // Display all ingredients initially
+    console.log("In updateIngredientLabels: displayIngredients(uniqueIngredients)",uniqueIngredients.length);
     displayIngredients(uniqueIngredients);
 
     // Add event listener for ingredient search input
     ingredientSearch.addEventListener('keyup', (e) => {
-        console.log("ingredient keyup");
+        console.log("ingredient keyup for ingredient search input");
         const query = e.target.value.toLowerCase();
         const filtered = uniqueIngredients.filter(ingredient =>
             ingredient.toLowerCase().includes(query)
         );
+        console.log("Event keyup: displayIngredients(filtered)", filtered.length);
         displayIngredients(filtered); // Update displayed list
     });
 }
@@ -187,6 +190,7 @@ function updateIngredientLabels(filteredRecipes) {
 function addSelectedIngredientTag(ingredient) {
 
     console.log("***addSelectedIngredientTag");
+    const dropdownContent = document.querySelector('.ingredients-content');
     const ingredientTag = document.createElement('div');
     ingredientTag.classList.add('selected-ingredient-tag');
     ingredientTag.textContent = ingredient;
@@ -195,8 +199,15 @@ function addSelectedIngredientTag(ingredient) {
     const removeButton = document.createElement('button');
     removeButton.textContent = 'X';
     removeButton.addEventListener('click', () => {
+///////////
+//// selectedIngredients sont des ingredients choisis
         selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
         ingredientTag.remove(); // Supprimer le tag
+        console.log("In addSelectedIngredientTag: after Tag.remove call selectedRecette(selectedIngredients)");
+        filteredRecipes = selectedRecette(selectedIngredients);
+        console.log("In addSelectedIngredientTag: updateIngredientLabels");
+        updateIngredientLabels(filteredRecipes);
+///////////    
         updateRecipesAndIngredients(); // Mettre à jour les recettes et ingrédients
     });
 
@@ -210,35 +221,52 @@ function removeSelectedIngredientTag(ingredient) {
     ingreTags.forEach(item => {
         if (item.textContent.trim().startsWith(ingredient)) {
             item.remove();
+            console.log(item,"removed");
         }
     });
 }
 
-// MAJ de Array des recettes en fonction des ingrédients selectionnés 
+// MAJ de Array des recettes en fonction des selectedIngredients (Array des ingrédients selectionnés)
 function selectedRecette(selectedIngredients) {
-    let result = [];
-    result = recipes.filter(recette =>
-        selectedIngredients.every(selectedIngredient =>
-            recette.ingredients.some(item => item.ingredient === selectedIngredient) // item étant l'ensemble des ingrédients d'une recette
-        )
-    );
+    let result = recipes;
+    //let recettes = recipes;
+    let selectedRecipes = result;
+
+    if (searchBarInput.value.length >= 3) {
+        query = searchBarInput.value;
+        console.log("In selectedRecette: filterRecipes 1")
+        selectedRecipes = filterRecipes(query,recipes);
+        console.log("In selectedRecette, result length 1er pass:",selectedRecipes.length);
+    }
+    console.log(" In selectedRecette, search input :", searchBarInput.value.length, searchBarInput.value);
+    console.log(" In selectedRecette, selectedIngredients:", selectedIngredients);
+    if (selectedIngredients !== null) {
+        result = selectedRecipes.filter(recette =>
+            selectedIngredients.every(selectedIngredient =>
+                recette.ingredients.some(item => item.ingredient === selectedIngredient) // item étant l'ensemble des ingrédients d'une recette
+            )
+        );
+        console.log("In selectedRecette, result length last pass:",result.length);
+    }
     return result;
 }
 
 // Fonction de MAJ des recettes et ingrédients en fonction des critères sélectionnés
 function updateRecipesAndIngredients() {
     console.log("*** updateRecipesAndIngredients");
+
     // Filtrer les recettes en fonction des ingrédients sélectionnés
-    const filteredRecipes = selectedRecette(selectedIngredients);
+    console.log("In updateRecipesAndIngredients: call selectedRecette(selectedIngredients)");
+    filteredRecipes = selectedRecette(selectedIngredients);
 
     console.log("in updateRecipesAndIngredients(): filteredRecipes length :", filteredRecipes.length);
-    for( let i = 0; i < filteredRecipes.length; i++ ) {
-        console.log("         filteredRecipes : ", filteredRecipes[i].name);
-    }
+
     // Afficher les recettes filtrées
+    console.log("In updateRecipesAndIngredients: displayRecipes");
     displayRecipes(filteredRecipes);
 
     // Mettre à jour les ingrédients dans la liste déroulante
+    console.log("In updateRecipesAndIngredients: updateIngredientLabels");
     updateIngredientLabels(filteredRecipes);
 
 }
@@ -247,17 +275,25 @@ function updateRecipesAndIngredients() {
 searchBarInput.addEventListener('input', (e) => {
     console.log("*** Event searchBarInput")
     const query = e.target.value.trim();
-////////////////////
-console.time("Excution Time");
-        const filteredRecipes = filterRecipes(query);
-console.timeEnd("Excution Time");
-///////////////////
-    if (query.length >= 3) {
-        console.log("query >=3 **** call updateIngredientLabels ");
+    let argRecettes = [];
+    let filteredRecipes = [];
+
+    filteredRecipes = recipes;
+
+    if (query.length >= 3 && isIngredientTagsEmpty()) {
+        console.log("In Event searchBar : filterRecipes 1")
+        ////////////////////
+        console.time("Excution Time");
+        filteredRecipes = filterRecipes(query,recipes);
+        console.timeEnd("Excution Time");
+        ///////////////////
+        console.log("query >=3 **** call updateIngredientLabels");
         updateIngredientLabels(filteredRecipes); // Met à jour les labels
-    } else {
-        console.log("query else < 3 **** fait rien");
+    } else if (!isIngredientTagsEmpty()) {
+            console.log("query else >= 3, Tag Not Empty, call selectedRecette(selectedIngredients) ");
+            filteredRecipes = selectedRecette(selectedIngredients)
     }
+    console.log("Event searchBar: call displayRecipes with filteredRecipes.length:",filteredRecipes.length);
     displayRecipes(filteredRecipes);
 });
 
@@ -296,7 +332,7 @@ document.addEventListener('click', closeDropdown);
 //
 /////////////////////////////////////////////////////////////////
 
-console.log("DEBUT de Programme:")
+console.log("DEBUT de Programme: calling displayRecipes")
 displayRecipes(recipes);
 console.log("calling updateIngredientLabels");
 updateIngredientLabels(recipes); // Mettre les ingredients dans la list 

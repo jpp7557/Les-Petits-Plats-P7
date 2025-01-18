@@ -1,27 +1,22 @@
 //
 // fichier algo-loop.js
 //
+//let filteredRecipes = recipes;
 
-function filterRecipes(query) {
-    let resultat = []; // Initialize an empty array to store the filtered recipes
-    query = query.toLowerCase();
-    let recipesList = recipes;
-    let filteredRecipes = [];
 
-    if (!isIngredientTagsEmpty()) {
-            //// objectif: filtrer les recettes qui comporte un ingredient dans "selectedIngredients"  
-            //// algorithme: parcourir recipes, on filtre celles qui ont un ingredient qui se trouve dans "selectedIngredients"
+//// objectif: filtrer les recettes qui comporte un ingredient dans "selectedIngredients"  
+//// algorithme: parcourir recipes, on filtre celles qui ont un ingredient qui se trouve dans "selectedIngredients"
+//// etape 1: verifie si pour chaque "selectedIngredient" qui se trouvent dans selectedIngredients, 
+//// étape 2: il y en a un qui est égale à un ingredient parmi tous les ingredients de "recipe"
 
-            //const filteredRecipes = recipes.filter(recette =>
-            //// etape 1: verifie si pour chaque "selectedIngredient" qui se trouvent dans selectedIngredients, 
-                    //selectedIngredients.every(selectedIngredient =>  
-            //// étape 2: il y en a un qui est égale à un ingredient parmi tous les ingredients de "recette"  
-                        //recette.ingredients.some(item => item.ingredient === selectedIngredient) // item étant l'ensemble des ingrédients d'une recette
-                    //)
-                //);
+/*
+function ingreTagFilter(rList) {
+    let filteredRecipes = recipes;
 
-        for (let i = 0; i < recipesList.length; i++) {
-            const recipe = recipesList[i];
+    let resultat = [];
+
+        for (let i = 0; i < rList.length; i++) {
+            const recipe = rList[i];
             let ingredientsMatch = false;
 
             // Check if a selectedIngredients[k] is in any of the ingredients of a given recipe.ingredients[j]
@@ -31,7 +26,7 @@ function filterRecipes(query) {
                         if (ingredient === selectedIngredients[k]) {
                             ingredientsMatch = true;
                             console.log("push ",recipe.name, "into resultat");
-                            filteredRecipes.push(recipe);
+                            resultat.push(recipe);
                             break;
                         }
                 }
@@ -39,18 +34,30 @@ function filterRecipes(query) {
             }
         }
 
-        recipesList = filteredRecipes;  // if ingredient tags is not empty, use filteredRecipes
+    filteredRecipes = resultat;  // if ingredient tags is not empty, 
 
-    }
-    console.log("filteredRecipes length :", filteredRecipes.length);
+    console.log("in ingreTagFilter, filteredRecipes length :", filteredRecipes.length);
 
     for (let i = 0; i < filteredRecipes.length; i++) {
-        console.log("              ", filteredRecipes[i].name);
+        console.log("         ", filteredRecipes[i].name);
     }
-    
 
-    for (let i = 0; i < recipesList.length; i++) {
-        const recipe = recipesList[i];
+    if (searchBarInput.value.length >= 3) {
+        query = searchBarInput.value;
+        console.log("in ingreTagFilter, query value:", searchBarInput.value);
+        resultat = filterRecipes(query,filteredRecipes);
+    }
+    return resultat;
+}
+*/
+
+function filterRecipes(query,argListRecettes) {
+    let resultat = []; // Initialize an empty array to store the filtered recipes
+    query = query.toLowerCase();
+
+    console.log("in filterRecipes, isIngredientTagsEmpty() =", isIngredientTagsEmpty());
+    for (let i = 0; i < argListRecettes.length; i++) {
+        const recipe = argListRecettes[i];
         let nameMatch = false;
         let descriptionMatch = false;
         let ingredientsMatch = false;
@@ -90,6 +97,7 @@ function filterRecipes(query) {
     }
 
     console.log("algo loop filterRecipes Nb RECETTE :", resultat.length);
+    //filteredRecipes = resultat;  // update filteredRecipes
     return resultat;
 }
 
