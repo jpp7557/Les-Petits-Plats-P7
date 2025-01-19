@@ -197,11 +197,21 @@ header input {
     text-align: left;
 }
 
-.dropdown-arrow {
+.ingredients-dropdown-arrow {
     width: 8px;
     height: 8px;
     cursor: pointer;
     margin-right: 12px;
+}
+
+
+.ingredients-dropdown-arrow {
+    transition: transform 0.1s ease;
+    transform: rotate(0deg);
+}
+
+.ingredients-dropdown-arrow.open {
+    transform: rotate(180deg);
 }
 
 .dropdown-button:hover {
@@ -211,7 +221,7 @@ header input {
 .ingredients-content {
     position: absolute;
     background-color: #f5e485;
-    min-width: 200px;
+    width: 200px;
     border: 1px solid #ccc;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1;
@@ -244,10 +254,13 @@ header input {
     background-color: #f1f1f1;
 }
 
-/* Affiche la liste déroulante lorsque l'utilisateur clique */
-/*.dropdown:hover .dropdown-content {
-    display: block;
-}*/
+.ingredient-search {
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+
+}
 
 /* //// 2.0 open  */
 .selected-ingredients-container {
