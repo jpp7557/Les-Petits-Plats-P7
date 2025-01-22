@@ -171,7 +171,8 @@ header input {
 /********************************************************/
 
 /* Style général */
-#dropdownIngredients {
+/*#dropdownIngredients,*/
+.dropdown {
     position: relative;
     display: inline-block;
 }
@@ -197,7 +198,7 @@ header input {
     text-align: left;
 }
 
-.ingredients-dropdown-arrow {
+.dropdown-arrow {
     width: 8px;
     height: 8px;
     cursor: pointer;
@@ -205,12 +206,12 @@ header input {
 }
 
 
-.ingredients-dropdown-arrow {
+.dropdown-arrow {
     transition: transform 0.1s ease;
     transform: rotate(0deg);
 }
 
-.ingredients-dropdown-arrow.open {
+.dropdown-arrow.open {
     transform: rotate(180deg);
 }
 
@@ -218,7 +219,7 @@ header input {
     background-color: #2980b9;
 }
 
-.ingredients-content {
+.dropdown-content {
     position: absolute;
     background-color: #f5e485;
     width: 200px;
@@ -236,7 +237,7 @@ header input {
 
 }
 
-.ingredients-content.open {
+.dropdown-content.open {
     max-height: 20em;
     overflow: scroll;
     opacity: 1;
@@ -244,13 +245,13 @@ header input {
     transform: scaleY(1); /* ouverture de la liste */
 }
 
-.ingredients-content label {
+.dropdown-content label {
     display: block;
     padding: 5px;
     cursor: pointer;
 }
 
-.ingredients-content label:hover {
+.dropdown-content label:hover {
     background-color: #f1f1f1;
 }
 

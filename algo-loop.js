@@ -1,7 +1,6 @@
 //
 // fichier algo-loop.js
 //
-//let filteredRecipes = recipes;
 
 
 //// objectif: filtrer les recettes qui comporte un ingredient dans "selectedIngredients"  
