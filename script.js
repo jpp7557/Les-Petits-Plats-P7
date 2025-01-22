@@ -848,16 +848,16 @@ function renderIngredientList(ingredientList, ingredients, selectedIngredients,t
 // 22/01 10h57 END
 //  21/01 
 // 3. Event de la barre de recherche dans le dropdown list des ingrédients
-function setupIngredientSearch(ingredientSearch, ingredientList, uniqueIngredients, selectedIngredients) {
+function setupitemSearch(itemSearch, itemList, uniqueItems, selectedItems) {
 
-    ingredientSearch.addEventListener('keyup', (e) => {
+    itemSearch.addEventListener('keyup', (e) => {
         const query = e.target.value.toLowerCase();
-        const filteredIngredients = uniqueIngredients.filter(ingredient =>
+        const filteredItems = uniqueItems.filter(ingredient =>
             ingredient.toLowerCase().includes(query)
         );
-        console.log("renderIngredientList dans setupIngredientSearch ")
+        console.log("renderIngredientList dans setupItemSearch ")
         // Mettre à jour la liste des ingrédients affichés
-        renderIngredientList(ingredientList, filteredIngredients, selectedIngredients);
+        renderIngredientList(itemList, filteredItems, selectedItems);
     });
 }
 //  21/01 
@@ -894,49 +894,48 @@ function setupIngredientSearch(ingredientSearch, ingredientList, uniqueIngredien
 function updateItemLabels(filteredRecipes, type) {    
     console.log("*** updateItemLabels");
 
-    //const constituant = ['ingredient', 'appliance', 'ustensil'];
+    const constituant = ['ingredient', 'appliance', 'ustensil'];
     let uniqueItems = []; 
     let dropdownContent;
     let paramRecipes = filteredRecipes;
 
-    if (type === 'ingredient') {
-        uniqueItems = getUniqueIngredients(paramRecipes);
-        dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
-        selectedItems = selectedIngredients;
-    } else if (type === 'appliance') {
-        uniqueItems = getUniqueAppliances(paramRecipes)
-        dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
-        selectedItems = selectedAppliances;
-    } else if (type === 'ustensil') {
-        uniqueItems = getUniqueUstensils(paramRecipes)
-        dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
-        selectedItems = selectedUstensils;
-    }
-        //const dropdownContent = document.getElementById(`${type}s-content`);
-        dropdownContent.innerHTML = ''; // Vider les anciens labels
+    constituant.forEach(type => {
+        if (type === 'ingredient') {
+            uniqueItems = getUniqueIngredients(paramRecipes);  // Récupérer les items (ingredients) sans doublon
+            dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
+            selectedItems = selectedIngredients;
+        } else if (type === 'appliance') {
+            uniqueItems = getUniqueAppliances(paramRecipes)  // Récupérer les items (appliances) sans doublon
+            dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
+            selectedItems = selectedAppliances;
+        } else if (type === 'ustensil') {
+            uniqueItems = getUniqueUstensils(paramRecipes) // Récupérer les items (ustensiles) sans doublon
+            dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
+            selectedItems = selectedUstensils;
+        }
+            //const dropdownContent = document.getElementById(`${type}s-content`);
+            dropdownContent.innerHTML = ''; // Vider les anciens labels
 
-        // Créer la barre de recherche
-        const ingredientSearch = document.createElement('input');
-        ingredientSearch.className = `.${type}-search`;
-        ingredientSearch.type = 'text';
-        ingredientSearch.placeholder = `Search ${type}s...`;
-        dropdownContent.appendChild(ingredientSearch);
+            // Créer la barre de recherche
+            const itemSearch = document.createElement('input');
+            itemSearch.className = `.${type}-search`;
+            itemSearch.type = 'text';
+            itemSearch.placeholder = `Search ${type}s...`;
+            dropdownContent.appendChild(itemSearch);
 
-        // Créer le conteneur pour les items (ingrédients, appliances ...)
-        const ingredientList = document.createElement('div');
-        ingredientList.classList.add(`${type}-list`);
-        dropdownContent.appendChild(ingredientList);
+            // Créer le conteneur pour les items (ingrédients, appliances ...)
+            const ingredientList = document.createElement('div');
+            ingredientList.classList.add(`${type}-list`);
+            dropdownContent.appendChild(ingredientList);
 
-        // Récupérer les ingrédients uniques
-        //const uniqueIngredients = getUniqueIngredients(filteredRecipes);
-
-        // Afficher tous les ingrédients au départ
-        console.log(`render${type}List dans updateItemLabels`);
-
+            // Afficher tous les ingrédients au départ
+            console.log(`render${type}List dans updateItemLabels`);
         renderItemList(ingredientList, uniqueItems, selectedItems, type);
 
         // Connecter la barre de recherche pour filtrer les ingrédients
-        setupIngredientSearch(ingredientSearch, ingredientList, uniqueItems, selectedItems);
+        setupitemSearch(itemSearch, ingredientList, uniqueItems, selectedItems);
+    })
+
 }
 
 //  21/01 END refactoriser updateIngredientLabels
