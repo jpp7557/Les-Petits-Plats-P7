@@ -265,7 +265,7 @@ function createItemLabelsDOM(itemType) {
     dropdownContent.appendChild(itemList);
 }
 
-function setItemLabelsContent(itemList, itemSearch, itemType,filteredRecipes) {
+function setItemLabelsContent(itemList, itemSearch, itemType, filteredRecipes) {
     let uniqueItems, selectedItems;
 
 
@@ -302,16 +302,19 @@ function setItemLabelsContent(itemList, itemSearch, itemType,filteredRecipes) {
 function addSelectedItemTag(item, itemType) {
     console.log(`*** addSelectedItemTag for ${itemType}`);
 
+    let selectedItemsContainer;
     // Créer le tag pour l'élément sélectionné
     const itemTag = document.createElement('div');
-    itemTag.classList.add(`selected-${itemType}-tag`);
+    //itemTag.classList.add(`selected-${itemType}-tag`);
+    itemTag.classList.add(`selected-items-tag`);
     itemTag.textContent = item;
 
-    // Ajouter un bouton pour supprimer le tag
+    // creation d'une croix pour supprimer le tag
     const removeButton = document.createElement('button');
     removeButton.textContent = 'X';
+
     removeButton.addEventListener('click', () => {
-        console.log(`Removing ${itemType}: ${item}`);
+        console.log(`"22/01: CLICK on X Event, Removing ${itemType}: ${item}`);
 
         // liste des items sélectionnés affichés dans recherche avancée
         if (itemType === 'ingredient') {
@@ -327,7 +330,8 @@ function addSelectedItemTag(item, itemType) {
         // Mettre à jour les recettes et ingrédients/ustensils/appareils
         console.log(`Updating recipes after removing ${itemType}`);
         filteredRecipes = selectedRecette(selectedIngredients, selectedUstensils, selectedAppliances);
-        updateItemLabels(item,itemType,filteredRecipes); // Mise à jour de la liste des ingrédients
+        console.log("22/01: filteredRecipes", filteredRecipes.length);
+        updateItemLabels(filteredRecipes,itemType); // Mise à jour de la liste des ingrédients
         //updateRecipesAndIngredients(); // Mise à jour globale
         updateRecipesAndItems(item,itemType); // Mise à jour globale
     });
@@ -459,7 +463,7 @@ function getUniqueUstensils(filteredRecipes) {
 // 2. fonction pour afficher le DOM des ingrédients dans le dropdown 
 //function renderIngredientList(ingredientList, ingredients, selectedIngredients) {
 
-function renderItemList(filtered, itemList, itemType, selectedItems) {
+function renderItemList(itemList, filtered, selectedItems, itemType) {
     itemList.innerHTML = ''; // Vider la liste actuelle
 
     filtered.forEach(item => {
@@ -502,6 +506,7 @@ function renderItemList(filtered, itemList, itemType, selectedItems) {
         label.appendChild(document.createTextNode(` ${item}`));
         itemList.appendChild(label);
     });
+    console.log("22/01 $ or not? itemList", itemList.childElementCount);
 }
 
 // 3. Event de la barre de recherche dans le dropdown list des ingrédients
@@ -597,14 +602,14 @@ function handleCheckboxClick(item, itemType, checkbox) {
     if (checkbox.checked) {
         // Add item if not already selected
         if (!selectedIngredients.includes(item)) {
-            console.log("addSelectedIngredientTag in handleCheckboxClick");
+            console.log("addSelectedItemTag in handleCheckboxClick");
             selectedIngredients.push(item);
-            addSelectedIngredientTag(item);
+            addSelectedItemTag(item);
         }
     } else {
         // Remove item if unchecked
         selectedIngredients = selectedIngredients.filter(selected => selected !== item);
-        removeSelectedIngredientTag(item);
+        removeSelectedItemTag(item);
     }
     updateRecipesAndItems(item,itemType); // Update recipes and ingredients
     toggleDropdown(); // Close dropdown
@@ -748,8 +753,54 @@ function updateRecipesAndIngredients() {
     return [...new Set(allIngredients)];
 }*/
 //  21/01 
-// 2. fonction pour afficher les ingrédients dans le DOM 
-function renderIngredientList(ingredientList, ingredients, selectedIngredients) {
+// 2. fonction pour afficher les ingrédients dans le DOM
+function renderIngredientList(ingredientList, ingredients, selectedIngredients,type) {
+    console.log("******** in renderIngredientList");
+    ingredientList.innerHTML = ''; // Vider la liste actuelle
+
+    ingredients.forEach(ingredient => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = ingredient;
+        let item = ingredient;
+        let itemType = 'ingredient';
+
+        // Si l'ingrédient est sélectionné, cochez la case
+        if (selectedIngredients.includes(ingredient)) {
+            checkbox.checked = true;
+            label.style.backgroundColor = '#f3bd1f';
+        }
+
+        // Gérer le clic sur la case à cocher
+        checkbox.addEventListener('click', () => {
+            if (checkbox.checked) {
+                // Ajouter l'ingrédient s'il n'est pas déjà sélectionné
+                if (!selectedIngredients.includes(ingredient)) {
+                    selectedIngredients.push(ingredient);
+                    console.log("addSelectedItemTag in checkbox CLICK Event in renderIngredientList");
+                    addSelectedItemTag(ingredient,itemType);
+                }
+            } else {
+                // Retirer l'ingrédient s'il est décoché
+                selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
+                removeSelectedItemTag(ingredient,itemType);
+            }
+
+            // Mettre à jour les recettes et ingrédients
+            //updateRecipesAndIngredients();
+
+            updateRecipesAndItems(item,itemType);
+        });
+
+        // Ajouter le checkbox et le texte à l'étiquette
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(` ${ingredient}`));
+        ingredientList.appendChild(label);
+    });
+} 
+// 22/01 10h57 BEGIN
+/* function renderIngredientList(ingredientList, ingredients, selectedIngredients) {
     console.log("******** in renderIngredientList");
     ingredientList.innerHTML = ''; // Vider la liste actuelle
 
@@ -793,7 +844,8 @@ function renderIngredientList(ingredientList, ingredients, selectedIngredients) 
         label.appendChild(document.createTextNode(` ${ingredient}`));
         ingredientList.appendChild(label);
     });
-}
+}*/
+// 22/01 10h57 END
 //  21/01 
 // 3. Event de la barre de recherche dans le dropdown list des ingrédients
 function setupIngredientSearch(ingredientSearch, ingredientList, uniqueIngredients, selectedIngredients) {
@@ -837,27 +889,29 @@ function setupIngredientSearch(ingredientSearch, ingredientList, uniqueIngredien
     setupIngredientSearch(ingredientSearch, ingredientList, uniqueIngredients, selectedIngredients);
 }*/
 
-function updateIngredientLabels(filteredRecipes) {    
-    console.log("*** updateIngredientLabels");
+// 22/01 modif: updateIngredientLabels(filteredRecipes) en updateItemLabels(filteredRecipes,type)  
 
-    const constituant = ['ingredient', 'appliance', 'ustensil'];
+function updateItemLabels(filteredRecipes, type) {    
+    console.log("*** updateItemLabels");
+
+    //const constituant = ['ingredient', 'appliance', 'ustensil'];
     let uniqueItems = []; 
-    let item;
     let dropdownContent;
-    let interRecipes = filteredRecipes;
-    // Call the function for each item type
-    constituant.forEach(type => {
-        if (type === 'ingredient') {
-            uniqueItems = getUniqueIngredients(interRecipes);
-            dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
-        } else if (type === 'appliance') {
-            uniqueItems = getUniqueAppliances(interRecipes)
-            dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
-        } else if (type === 'ustensil') {
-            uniqueItems = getUniqueUstensils(interRecipes)
-            dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
-        }
-    console.log(" *************** content id:", `${type}-content`);
+    let paramRecipes = filteredRecipes;
+
+    if (type === 'ingredient') {
+        uniqueItems = getUniqueIngredients(paramRecipes);
+        dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
+        selectedItems = selectedIngredients;
+    } else if (type === 'appliance') {
+        uniqueItems = getUniqueAppliances(paramRecipes)
+        dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
+        selectedItems = selectedAppliances;
+    } else if (type === 'ustensil') {
+        uniqueItems = getUniqueUstensils(paramRecipes)
+        dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
+        selectedItems = selectedUstensils;
+    }
         //const dropdownContent = document.getElementById(`${type}s-content`);
         dropdownContent.innerHTML = ''; // Vider les anciens labels
 
@@ -868,7 +922,7 @@ function updateIngredientLabels(filteredRecipes) {
         ingredientSearch.placeholder = `Search ${type}s...`;
         dropdownContent.appendChild(ingredientSearch);
 
-        // Créer le conteneur pour les ingrédients
+        // Créer le conteneur pour les items (ingrédients, appliances ...)
         const ingredientList = document.createElement('div');
         ingredientList.classList.add(`${type}-list`);
         dropdownContent.appendChild(ingredientList);
@@ -877,13 +931,12 @@ function updateIngredientLabels(filteredRecipes) {
         //const uniqueIngredients = getUniqueIngredients(filteredRecipes);
 
         // Afficher tous les ingrédients au départ
-        console.log("renderIngredientList dans updateIngredientLabels ")
+        console.log(`render${type}List dans updateItemLabels`);
 
-        renderIngredientList(ingredientList, uniqueItems, selectedIngredients);
+        renderItemList(ingredientList, uniqueItems, selectedItems, type);
 
         // Connecter la barre de recherche pour filtrer les ingrédients
-        setupIngredientSearch(ingredientSearch, ingredientList, uniqueItems, selectedIngredients);
-    })
+        setupIngredientSearch(ingredientSearch, ingredientList, uniqueItems, selectedItems);
 }
 
 //  21/01 END refactoriser updateIngredientLabels
@@ -902,11 +955,8 @@ function updateRecipesAndItems(item,itemType) {
     displayRecipes(filteredRecipes);
 
     // Mettre à jour les ingrédients dans la liste déroulante
-    console.log("In updateRecipesAndItems: updateIngredientLabels",item,itemType);
-    //updateItemLabels(item,itemType,filteredRecipes); refactorisee
-        //createItemLabelsDOM(itemType);
-        //setItemLabelsContent(itemList, itemSearch, itemType, filteredRecipes); 
-    updateIngredientLabels(filteredRecipes);
+    console.log("In updateRecipesAndItems: calling updateItemLabels",item,itemType);
+    updateItemLabels(filteredRecipes,itemType);
 }
 
 // Event 3 carac. sur la barre de recherche
@@ -961,31 +1011,6 @@ dropdownButton.addEventListener('click', (event) => {
 25/01/21 */
 
 // 25/01/21  BEGIN
-
-/*document.querySelectorAll('.dropdown-button').forEach(button => {
-    button.addEventListener('click', () => {
-        //const dropdown = button.closest('.dropdown'); // Trouver le conteneur parent
-
-        // Select the element
-        let dropdownContent = document.querySelector('.dropdown-content');
-        
-        // Get the value of the "data-type" attribute using dataset
-        const dataType = dropdownContent.dataset.type;
-
-        dropdownContent = document.getElementById(`${dataType}-content`);
-        
-        // Toggle l'état visible/invisible
-        const isOpen = dropdownContent.classList.contains('open');
-        closeAllDropdowns(); // Fermer tous les autres dropdowns
-        if (!isOpen) {
-            dropdownContent.classList.add('open');
-            dropdownContent.setAttribute('aria-hidden', 'false');
-        } else {
-            dropdownContent.classList.remove('open');
-            dropdownContent.setAttribute('aria-hidden', 'true');
-        }
-    });
-});*/
 
 // Fonction pour fermer tous les dropdowns
 function closeAllDropdowns() {
@@ -1059,16 +1084,19 @@ dropdownButtons.forEach(item => {
 //
 /////////////////////////////////////////////////////////////////
 
+const constituant = ['ingredient', 'appliance', 'ustensil'];
 console.log("DEBUT de Programme: calling displayRecipes")
 displayRecipes(recipes);
-console.log("calling updateIngredientLabels");
-updateIngredientLabels(recipes); // Mettre les ingredients dans la list
 
-console.log("sortie de updateIngredientLabels");
+// Initialisation pour chaque liste déroulante
+constituant.forEach(type => {
+    console.log(`Init: calling updateItemLabels for ${type}`); // Mettre les items dans la dropdown list 
+    updateItemLabels(recipes,type);
+}); 
+console.log("Init: sortie de updateItemLabels");
 // Effacer le contenu de la barre input
 searchBarInput.value = '';
 
-// Initialisation pour chaque liste déroulante
 
 
 
