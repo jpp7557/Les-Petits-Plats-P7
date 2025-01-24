@@ -375,23 +375,26 @@ function removeSelectedItemTag(item,itemType) {
     });
 }
 
-function removeSelectedItemFromList(item,itemType,list) {
-    let listToUpdate = [] ;
+function removeSelectedItemFromList(item,itemType,myList) {
+    console.log("myList")
+    let listUpdated ;
     switch (itemType) {
         case 'ingredient' :
-            listToUpdate = selectedIngredients;
+            selectedIngredients = myList.filter(param => param !== item);
+            listUpdated = selectedIngredients;
             break;
         case 'appliance':
-            listToUpdate = selectedAppliances;
+            selectedAppliances = myList.filter(param => param !== item);
+            listUpdated = selectedAppliances;
             break;
         case 'ustensil':
-            listToUpdate = selectedUstensils;
+            selectedUstensils = myList.filter(param => param !== item);
+            listUpdated = selectedUstensils;
             break;
         default:
             break;
     }
-    list = list.filter(param => param !== item);
-    listToUpdate = list;
+    console.log("24/01/2025: list Updated",listUpdated);
 }
 
 // MAJ de Array des recettes en fonction des selectedIngredients (Array des ingrédients selectionnés)
@@ -509,6 +512,7 @@ function settingItemList(itemList, filtered, selectedItems, itemType) {
             const clickedCheckbox = e.target;
             let i = 0;
           // forEach Loop
+          console.log("24/01/2025 selectedItems in heck box click Event", selectedItems);
             selectedItems.forEach(item => {
                 i++;
                 console.log(i," ********",item, "checked ?",checkbox.checked, clickedCheckbox.value, "************")
@@ -539,6 +543,7 @@ function settingItemList(itemList, filtered, selectedItems, itemType) {
         label.appendChild(document.createTextNode(` ${item}`));
         itemList.appendChild(label);
     });
+
     console.log(`22/01 $ or not? ${itemList}`, itemList.className, itemList.childElementCount);
 }
 
