@@ -255,7 +255,11 @@ header input {
     background-color: #f1f1f1;
 }
 
-.ingredient-search {
+.ingredient-search,
+.appliance-search,
+.ustensil-search {
+    display:block;
+    width:fit-content;
     padding: 10px;
     font-size: 14px;
     border: none;
