@@ -312,6 +312,7 @@ function settingItemList(itemList, filtered, selectedItems, itemType) {
         checkbox.addEventListener('click', (e) => {
             e.stopPropagation(); // Empêche la fermeture immédiate de la list dropdown
             const clickedCheckbox = e.target;
+            console.log("25/01/2025:  cliked checkbox target",clickedCheckbox);
 
             console.log("24/01/2025 selectedItems in heck box click Event", selectedItems);
             console.log("22/01 $ or not?  check box Event");
@@ -609,7 +610,7 @@ function toggleDropdown(dropdownContent,dropdownItem,associatedArrow) {
 
 }
 
-/* 25/01/21  BEGIN
+// 25/01/21  BEGIN
 // Fonction pour fermer tous les dropdowns
 function closeAllDropdowns() {
     document.querySelectorAll('.dropdown-content').forEach(content => {
@@ -619,10 +620,17 @@ function closeAllDropdowns() {
 }
 
 // "clic à l'extérieur de la list" declenche la fermeture
-document.addEventListener('click', closeAllDropdowns);
+document.addEventListener('click', (e) => {
+        e.stopPropagation(); // Empêche la fermeture immédiate de la list dropdown
+        const inCheckList = document.querySelector('input[type="checkbox"]');
+        console.log("25/01/2025  outside target",e.target);
+        if (!(e.target === inCheckList) ) {
+            closeAllDropdowns();
+        }
+});
 
 // 25/01/21  END
-*/
+
 
 const dropdownArrows = document.querySelectorAll('.dropdown-arrow');
 dropdownArrows.forEach(arrow => {
