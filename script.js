@@ -287,6 +287,48 @@ function getUniqueUstensils(filteredRecipes) {
 //function renderIngredientList(ingredientList, ingredients, selectedIngredients) {
 
 function settingItemList(itemList, filtered, selectedItems, itemType) {
+    console.log(`[Start] Setting item list for type: ${itemType}`);
+
+    itemList.innerHTML = ''; // Vider la liste actuelle
+
+    filtered.forEach(item => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = item;
+
+        // Si l'ingrédient est sélectionné (dans la liste selectedItems), cochez la case
+        if (selectedItems.includes(item)) {
+            checkbox.checked = true;
+            label.classList.add('highlighted');  // choisir '#f3bd1f'
+        }
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(` ${item}`));
+        itemList.appendChild(label);
+
+        checkbox.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleCheckboxStateChange(e.target.checked, item, itemType, selectedItems);
+            updateRecipesAndItems(item, itemType);
+        });
+    });
+}
+
+function handleCheckboxStateChange(checked, item, itemType, selectedItems) {
+    if (checked) {
+        if (!selectedItems.includes(item)) {
+            selectedItems.push(item);
+            addSelectedItemTag(item, itemType);
+        }
+    } else {
+        removeSelectedItemFromList(item, itemType, selectedItems);
+        removeSelectedItemTag(item, itemType);
+    }
+}
+
+
+/*function settingItemList(itemList, filtered, selectedItems, itemType) {
     console.log("************ oh là là settingItemList **************")
     itemList.innerHTML = ''; // Vider la liste actuelle
 
@@ -334,7 +376,7 @@ function settingItemList(itemList, filtered, selectedItems, itemType) {
             updateRecipesAndItems(item,itemType);
         });
     });
-}
+}*/
 
 
 function createSearchBar(className, parentElement) {
@@ -361,10 +403,11 @@ function handleCheckboxClick(item, itemType, checkbox) {
     updateRecipesAndItems(item,itemType); // Update recipes and ingredients
 }
 
-
+/*
+// 25/01/2025 BEGIN
 function displayItems(items, container, itemType) {
     container.innerHTML = ''; // Clear existing list
-console.log("****  22/01 displayItems non utilisé")
+console.log("****  25/01 displayItems non utilisé ? appelé ?")
     items.forEach(item => {
         const label = document.createElement('label');
         const checkbox = document.createElement('input');
@@ -385,6 +428,8 @@ console.log("****  22/01 displayItems non utilisé")
         container.appendChild(label);
     });
 }
+// 25/01/2025 END
+*/
 
 function setupSearchBar(searchInput, items, container, itemType) {
     searchInput.addEventListener('keyup', (e) => {
@@ -408,16 +453,14 @@ function addSelectedIngredientTag(ingredient) {
     const removeButton = document.createElement('button');
     ingredientTag.appendChild(removeButton);
     selectedItemsContainer.appendChild(ingredientTag);
-    removeButton.textContent = 'X'; ////  le bouton 'X' pour deleter l'element 
+    removeButton.textContent = 'X'; ////  ajout du bouton 'X' pour deleter l'element 
 
     //// click Event pour le bouton 'X' 
     removeButton.addEventListener('click', () => {
-//// selectedIngredients sont des ingredients choisis
+    //// selectedIngredients sont des ingredients choisis
         let itemType = 'ingredient';
         selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
         ingredientTag.remove(); // Supprimer le tag
-        console.log("In add SelectedIngredientTag: Tag.remove call then ..");
-        //filteredRecipes = selectedRecette(selectedIngredients);
         filteredRecipes = selectedRecette(selectedIngredients, selectedUstensils, selectedAppliances);
         console.log("In add SelectedIngredientTag: updateIngredientLabels");
         updateIngredientLabels(filteredRecipes);
@@ -515,7 +558,7 @@ function itemBarSearchEvents(itemSearch, itemList, uniqueItems, selectedItems, t
 // 22/01 END
 
 function updateItemLabels(filteredRecipes) {    
-    console.log("*** updateItemLabels");
+    console.log("23/01/25:  *** updateItemLabels");
 
     const constituant = ['ingredient', 'appliance', 'ustensil'];
     let uniqueItems = []; 
@@ -553,8 +596,7 @@ function updateItemLabels(filteredRecipes) {
         dropdownContent.appendChild(itemList);
 
         // Mettre à jour la liste des ingrédients affichés
-        console.log("23/01/25:  settingItemList dans updateItemLabels, puis  ")
-        console.log(`settingItemList dans updateItemLabels pout ${type}`);
+        console.log(`23/01/25:  settingItemList dans updateItemLabels pout ${type}`);
         settingItemList(itemList, uniqueItems, selectedItems, type);
 
         // Connecter la barre de recherche pour filtrer les ingrédients
@@ -604,38 +646,34 @@ function toggleDropdown(dropdownContent,dropdownItem,associatedArrow) {
     const isOpen = dropdownContent.classList.contains('open'); // isOpen toggles false/true
     dropdownContent.classList.toggle('open');  // toggles adding/removing the "open" class
     associatedArrow === "" ? "" : associatedArrow.classList.toggle('open');
-    dropdownContent.setAttribute('aria-hidden', isOpen);  // aria-hidedn toggles true/false
     dropdownItem.classList.toggle('open');
     console.log("togleDropdown isOpen:",!isOpen);
 
 }
 
-// 25/01/21  BEGIN
-// Fonction pour fermer tous les dropdowns
-function closeAllDropdowns() {
-    document.querySelectorAll('.dropdown-content').forEach(content => {
-        content.classList.remove('open');
-        content.setAttribute('aria-hidden', 'true');
+// Prevent dropdown from closing when clicking inside its content
+document.querySelectorAll('.dropdown-content').forEach(content => {
+    content.addEventListener('click', (event) => {
+        event.stopPropagation();
     });
-}
-
-// "clic à l'extérieur de la list" declenche la fermeture
-document.addEventListener('click', (e) => {
-        e.stopPropagation(); // Empêche la fermeture immédiate de la list dropdown
-        const inCheckList = document.querySelector('input[type="checkbox"]');
-        console.log("25/01/2025  outside target",e.target);
-        if (!(e.target === inCheckList) ) {
-            closeAllDropdowns();
-        }
 });
 
-// 25/01/21  END
+
+// Close all dropdowns and setting all arrows up when clicking outside
+document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+        content.classList.remove('open');
+    });
+    document.querySelectorAll('.dropdown-arrow').forEach(arrow => {
+        arrow.classList.remove('open');
+    })
+});
 
 
 const dropdownArrows = document.querySelectorAll('.dropdown-arrow');
 dropdownArrows.forEach(arrow => {
     arrow.addEventListener('click', (event) => {
-        event.stopPropagation(); // Empêche la fermeture immédiate
+        event.stopPropagation(); // Empêche la fermeture immédiate 
 
         // Récupérer l'élément cliqué
         const clickedArrow = event.target;
@@ -682,10 +720,15 @@ console.log("DEBUT de Programme: calling displayRecipes")
 displayRecipes(recipes);
 
 // Initialisation pour chaque liste déroulante
+/*
 constituant.forEach(type => {
     console.log(`Init: calling updateItemLabels for ${type}`); // Mettre les items dans la dropdown list 
     updateItemLabels(recipes);
-}); 
+});*/
+
+console.log("Init: calling updateItemLabels(recipes)"); // Mettre les items dans la dropdown list 
+updateItemLabels(recipes);
+
 console.log("Init: sortie de updateItemLabels");
 // Effacer le contenu de la barre input
 searchBarInput.value = '';
