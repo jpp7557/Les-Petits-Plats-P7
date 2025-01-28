@@ -4,9 +4,6 @@
 const searchBarInput = document.getElementById('search-bar-input');
 const recipesContainer = document.getElementById('recipes-container');
 const nbRecettesTrouvees = document.getElementById('nbRecettes');
-//const selectedIngredientsContainer = document.getElementById('selected-ingredients-container');
-//const selectedUstensilsContainer = document.getElementById('selected-ustensils-container');
-//const selectedAppliancesContainer = document.getElementById('selected-appliances-container');
 const selectedItemsContainer = document.getElementById('selected-items-container');
 
 
@@ -16,6 +13,68 @@ let selectedUstensils = []; // Liste des ingrédients selectionnes
 let selectedAppliances = []; // Liste des ingrédients selectionnes
 
 // Fonction pour afficher les recettes
+
+function displayRecipes(filteredRecipes) {
+    console.log("***28/01/2025:  NEW displayRecipes");
+    
+    // vider le container
+    recipesContainer.innerHTML = '';
+    
+    // Handle empty recipe list
+    if (filteredRecipes.length === 0) {
+        nbRecettesTrouvees.textContent = "0 Recettes";
+        recipesContainer.innerHTML = '<p>Aucune recette trouvée.</p>';
+        return;
+    }
+
+    //1. using map() and join() to Create a single string for ingredients of each recipe
+    const recipesHTML = filteredRecipes.map(recipe => {
+        const imgSource = recipe.id < 10 
+            ? `Recette0${recipe.id}.jpg` 
+            : `Recette${recipe.id}.jpg`;
+
+        let ingredientsHTML = recipe.ingredients.map(item => {
+            const unit = item.unit || ""; // Default to empty if unit is missing
+            const quantity = item.quantity || ""; // Default to empty if quantity is missing
+            return `
+                <li>
+                    <span class="ingredient-name">${item.ingredient}</span><br>
+                    ${quantity} ${unit}
+                </li>
+            `;
+        }) 
+        ingredientsHTML = ingredientsHTML.join(''); // Join all ingredients into one string
+        /* comment to keep
+            //console.log(" AFTER join() recipe :  ", recipe.name, "\n              ingredients:", ingredientsHTML);
+        */
+    //2. using join() to Join all recipes into one string and return the DOM to recette-card 
+    return `
+                <div class="recette-card">
+                    <img 
+                        class="img-recette" 
+                        src="../Newphotos/recipes/${imgSource}" 
+                        alt="Photo de la recette ${recipe.name}">
+                    <p class=duree>${recipe.time}min</p>
+                    <h2>${recipe.name}</h2>
+                    <h3 class="recette">RECETTE</h3>
+                    <p>${recipe.description}</p>
+                    <h3>INGREDIENTS</h3>
+                    <ul class="ingredients-list">
+                        ${ingredientsHTML}
+                    </ul>
+                </div>
+            `;
+    }).join(''); // Join all recipes into one string
+
+    // Update the DOM once
+    recipesContainer.innerHTML = recipesHTML;
+
+    // Update the recipe count
+    nbRecettesTrouvees.textContent = `${filteredRecipes.length} Recettes`;
+}
+
+//  28/01/2025 BEGIN
+/*
 function displayRecipes(filteredRecipes) {
     console.log("*** displayRecipes");
     recipesContainer.innerHTML = ''; // Vider le conteneur
@@ -25,7 +84,7 @@ function displayRecipes(filteredRecipes) {
         return;
     }
     filteredRecipes.forEach(recipe => {        
-        
+
         imgsource = recipe.id < 10 ? `Recette0${recipe.id}.jpg` : `Recette${recipe.id}.jpg`
 
         let recipeHTML = `
@@ -36,9 +95,9 @@ function displayRecipes(filteredRecipes) {
                 <p>${recipe.description}</p>
                 <h3>INGREDIENTS</h3>
                 <ul class="ingredients-list">
-            `;
-        // Ajout dynamique des ingrédients à la carte
+            `;    
                 recipe.ingredients.forEach(item => {
+                    
                     let unitSiExist;
                     let quantitySiExist;
                     
@@ -51,8 +110,6 @@ function displayRecipes(filteredRecipes) {
                     quantitySiExist = (!item.quantity) ? "" : item.quantity;
                     recipeHTML += `<li><span class="ingredient-name">${item.ingredient}</span><br>${quantitySiExist} ${unitSiExist}</li>`;
                 });
-        // Ajout dynamique des ingrédients à la dropdown list ingredientsUL
-
         // Fermeture de la liste et du conteneur
         recipeHTML += `
                     </ul>
@@ -63,6 +120,10 @@ function displayRecipes(filteredRecipes) {
     });
     nbRecettesTrouvees.textContent = `${filteredRecipes.length} Recettes`;
 }
+*/
+//  28/01/2025 END
+
+
 
 function isIngredientTagsEmpty() {
     return !selectedItemsContainer.hasChildNodes();
@@ -72,16 +133,7 @@ function isIngredientTagsEmpty() {
 /*  Refactore  */
 /* *************/
 
-// 2. fonction pour afficher le DOM des ingrédients dans le dropdown  
-/*function renderIngredientList(ingredientList, ingredients, selectedIngredients) {*/
-
-// 3. Event de la barre de recherche dans le dropdown list des ingrédients
-/*function setupIngredientSearch(ingredientSearch, ingredientList, uniqueIngredients, selectedIngredients) */
-
-// updateIngredientLabels refactorisee
-/*function updateIngredientLabels(filteredRecipes) */
-
-
+/*
 // updateItemLabels refactorisee
 function createItemLabelsDOM(itemType) {
     console.log("*** createItemLabels",itemType);
@@ -96,11 +148,11 @@ function createItemLabelsDOM(itemType) {
     dropdownContent.appendChild(itemSearch);
 
     // Créer le conteneur pour les ingrédients
-    const itemList = document.createElement('div');
+    const itemList = document.createElement('ul');
     itemList.classList.add(`${itemType}-list`);
     dropdownContent.appendChild(itemList);
 }
-
+*/
 function setItemLabelsContent(itemList, itemSearch, itemType, filteredRecipes) {
     let uniqueItems, selectedItems;
 
@@ -216,7 +268,10 @@ function selectedRecette(selectedIngredients, selectedUstensils, selectedApplian
 
     // Filter by search bar input
     if (searchBarInput.value.length >= 3) {
-        const query = searchBarInput.value.toLowerCase();
+        let query = searchBarInput.value
+        .replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '"') // Remplace les caractères non autorisés par le tréma: '"'
+        .slice(0, searchBarMaxLength);       // Limite la longueur
+        query = query.toLowerCase();
         console.log("Filtering by search input:", query);
         selectedRecipes = filterRecipes(query, selectedRecipes);
         console.log("Remaining recipes after filtering by search input:", selectedRecipes.length);
@@ -292,91 +347,36 @@ function settingItemList(itemList, filtered, selectedItems, itemType) {
     itemList.innerHTML = ''; // Vider la liste actuelle
 
     filtered.forEach(item => {
-        const label = document.createElement('label');
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = item;
+        const itemListLi = document.createElement('li');  //itemListLi: label
+        //itemListLi.textContent = item;
 
         // Si l'ingrédient est sélectionné (dans la liste selectedItems), cochez la case
         if (selectedItems.includes(item)) {
-            checkbox.checked = true;
-            label.classList.add('highlighted');  // choisir '#f3bd1f'
+            itemListLi.classList.add('highlighted');  // choisir '#f3bd1f'
         }
 
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(` ${item}`));
-        itemList.appendChild(label);
+        itemListLi.appendChild(document.createTextNode(` ${item}`));
+        itemList.appendChild(itemListLi);
 
-        checkbox.addEventListener('click', (e) => {
+        itemListLi.addEventListener('click', (e) => {
             e.stopPropagation();
-            handleCheckboxStateChange(e.target.checked, item, itemType, selectedItems);
+            handleLiState(e.target, item, itemType, selectedItems);
             updateRecipesAndItems(item, itemType);
         });
     });
 }
 
-function handleCheckboxStateChange(checked, item, itemType, selectedItems) {
-    if (checked) {
+function handleLiState(target, item, itemType, selectedItems) {
+    if (target.querySelector('.highlighted') === null) {
         if (!selectedItems.includes(item)) {
             selectedItems.push(item);
             addSelectedItemTag(item, itemType);
+        } else {
+            removeSelectedItemFromList(item, itemType, selectedItems);
+            removeSelectedItemTag(item, itemType);
         }
-    } else {
-        removeSelectedItemFromList(item, itemType, selectedItems);
-        removeSelectedItemTag(item, itemType);
     }
 }
-
-
-/*function settingItemList(itemList, filtered, selectedItems, itemType) {
-    console.log("************ oh là là settingItemList **************")
-    itemList.innerHTML = ''; // Vider la liste actuelle
-
-    filtered.forEach(item => {
-        const label = document.createElement('label');
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = item;
-
-        // Si l'ingrédient est sélectionné (dans la liste selectedItems), cochez la case
-        if (selectedItems.includes(item)) {
-            console.log("********includes ", item, "checked ?", checkbox.checked);
-            checkbox.checked = true;
-            label.style.backgroundColor = '#f3bd1f';
-            console.log("********includes ", item, "checked ?", checkbox.checked);
-        }
-
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(` ${item}`));
-        itemList.appendChild(label);
-
-    /////// Event clic sur le checkbox
-        checkbox.addEventListener('click', (e) => {
-            e.stopPropagation(); // Empêche la fermeture immédiate de la list dropdown
-            const clickedCheckbox = e.target;
-            console.log("25/01/2025:  cliked checkbox target",clickedCheckbox);
-
-            console.log("24/01/2025 selectedItems in heck box click Event", selectedItems);
-            console.log("22/01 $ or not?  check box Event");
-            if (clickedCheckbox.checked) {
-                console.log("22/01 $ or not?  checkbox Event",item, "checked ?", clickedCheckbox.checked);
-                // Ajouter l'item s'il n'est pas déjà sélectionné
-                if (!selectedItems.includes(item)) {
-                    selectedItems.push(item);
-                    addSelectedItemTag(item,itemType);
-                    console.log("check box push", item, "selectedItems length", selectedItems.length);
-                }
-            } else {
-                // Retirer l'item s'il est décoché
-                removeSelectedItemFromList(item,itemType,selectedItems);
-                console.log("22/01 $ or not?  checkbox Event is ",item, "checked ?", clickedCheckbox.checked);
-                console.log("23/01/25 Removed", item, "selectedItems length", selectedItems.length);
-                removeSelectedItemTag(item,itemType);
-            }
-            updateRecipesAndItems(item,itemType);
-        });
-    });
-}*/
 
 
 function createSearchBar(className, parentElement) {
@@ -405,30 +405,6 @@ function handleCheckboxClick(item, itemType, checkbox) {
 
 /*
 // 25/01/2025 BEGIN
-function displayItems(items, container, itemType) {
-    container.innerHTML = ''; // Clear existing list
-console.log("****  25/01 displayItems non utilisé ? appelé ?")
-    items.forEach(item => {
-        const label = document.createElement('label');
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = item;
-
-        // Mark as selected if applicable
-        if (selectedIngredients.includes(item)) {
-            checkbox.checked = true;
-            label.style.backgroundColor = '#f3bd1f';
-        }
-
-        // Handle checkbox click events
-        checkbox.addEventListener('click', () => handleCheckboxClick(item, itemType, checkbox));
-
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(` ${item}`));
-        container.appendChild(label);
-    });
-}
-// 25/01/2025 END
 */
 
 function setupSearchBar(searchInput, items, container, itemType) {
@@ -442,78 +418,7 @@ function setupSearchBar(searchInput, items, container, itemType) {
 
 
 // Ajouter une div pour afficher le tag de l'item sélectionné
-function addSelectedIngredientTag(ingredient) {
-
-    console.log("***add SelectedIngredientTag");
-    const ingredientTag = document.createElement('div');
-    ingredientTag.classList.add('selected-ingredient-tag');
-    ingredientTag.textContent = ingredient;
-
-    // Ajouter une croix pour supprimer le tag de l'item dans la barre "selectedItemsContainer"
-    const removeButton = document.createElement('button');
-    ingredientTag.appendChild(removeButton);
-    selectedItemsContainer.appendChild(ingredientTag);
-    removeButton.textContent = 'X'; ////  ajout du bouton 'X' pour deleter l'element 
-
-    //// click Event pour le bouton 'X' 
-    removeButton.addEventListener('click', () => {
-    //// selectedIngredients sont des ingredients choisis
-        let itemType = 'ingredient';
-        selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
-        ingredientTag.remove(); // Supprimer le tag
-        filteredRecipes = selectedRecette(selectedIngredients, selectedUstensils, selectedAppliances);
-        console.log("In add SelectedIngredientTag: updateIngredientLabels");
-        updateIngredientLabels(filteredRecipes);
-        console.log("After updateIngredientLabels:",ingredient);
-        updateRecipesAndItems(ingredient,itemType) ; // Mettre à jour les recettes et ingrédients
-    });
-}
-
-//  21/01 
-// 2. fonction pour afficher les ingrédients dans le DOM
-function renderIngredientList(ingredientList, ingredients, selectedIngredients,type) {
-    console.log("******** in renderIngredientList");
-    ingredientList.innerHTML = ''; // Vider la liste actuelle
-
-    ingredients.forEach(ingredient => {
-        const label = document.createElement('label');
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = ingredient;
-        let item = ingredient;
-        let itemType = 'ingredient';
-
-        // Ajouter le checkbox et le texte à l'étiquette
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(` ${ingredient}`));
-        ingredientList.appendChild(label);
-        
-        // Si l'ingrédient est sélectionné, cochez la case
-        if (selectedIngredients.includes(ingredient)) {
-            checkbox.checked = true;
-            label.style.backgroundColor = '#f3bd1f';
-        }
-
-        // Gérer le clic sur la case à cocher
-        checkbox.addEventListener('click', () => {
-            if (checkbox.checked) {
-                // Ajouter l'ingrédient s'il n'est pas déjà sélectionné
-                if (!selectedIngredients.includes(ingredient)) {
-                    selectedIngredients.push(ingredient);
-                    console.log("addSelectedItemTag in checkbox CLICK Event in renderIngredientList");
-                    addSelectedItemTag(ingredient,itemType);
-                }
-            } else {
-                // Retirer l'ingrédient s'il est décoché
-                selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
-                removeSelectedItemTag(ingredient,itemType);
-            }
-
-            // Mettre à jour les recettes et ingrédients
-            updateRecipesAndItems(item,itemType);
-        });
-    });
-} 
+//function addSelectedIngredientTag(ingredient) 
 
 //  21/01 
 // 3. Event de la barre de recherche dans le dropdown list des ingrédients
@@ -591,7 +496,7 @@ function updateItemLabels(filteredRecipes) {
         dropdownContent.appendChild(itemSearch);
 
         // Créer le conteneur pour les items (ingrédients, appliances ...)
-        const itemList = document.createElement('div');
+        const itemList = document.createElement('ul');
         itemList.classList.add(`${type}-list`);
         dropdownContent.appendChild(itemList);
 
@@ -626,8 +531,9 @@ function updateRecipesAndItems(item,itemType) {
 // Event 3 carac. sur la barre de recherche
 searchBarInput.addEventListener('input', (e) => {
     console.log("*** Event searchBarInput")
-    const query = e.target.value.trim();
-    let argRecettes = [];
+    //const query = e.target.value.trim();
+    //const query = e.target.value.replace(/[^a-zA-Z0-9 ]/g, '').slice(0, searchBarMaxLength);
+
     let filteredRecipes = [];
 
     filteredRecipes = recipes;
@@ -661,11 +567,15 @@ document.querySelectorAll('.dropdown-content').forEach(content => {
 
 // Close all dropdowns and setting all arrows up when clicking outside
 document.addEventListener('click', () => {
+    console.log("27/01/2025:  ******* CLICK Received ")
     document.querySelectorAll('.dropdown-content').forEach(content => {
         content.classList.remove('open');
     });
     document.querySelectorAll('.dropdown-arrow').forEach(arrow => {
         arrow.classList.remove('open');
+    })
+    document.querySelectorAll('.dropdown-button').forEach(button => {
+        button.classList.remove('open');
     })
 });
 
@@ -693,19 +603,21 @@ const dropdownButtons = document.querySelectorAll('.dropdown-button');
 dropdownButtons.forEach(item => {
     item.addEventListener('click', (event) => {
         event.stopPropagation(); // Empêche la fermeture immédiate
-
         // Récupérer l'élément cliqué
-        const clickedItem = event.target;
-
+        const clickedSpan = event.target;
         // Optionnel : Identifier le parent associé (par exemple, la liste dropdown)
-        const dropdownContent = clickedItem.closest('.dropdown').querySelector('.dropdown-content');
-        const associatedArrow = clickedItem.closest('.dropdown').querySelector('.dropdown-arrow');
+        const clickedButton = clickedSpan.closest('.dropdown-button');
+        //clickedButton.classList.toggle('open');
+
+        const dropdownContent = clickedSpan.closest('.dropdown').querySelector('.dropdown-content');
+        const associatedArrow = clickedSpan.closest('.dropdown').querySelector('.dropdown-arrow');
         console.log("** Event dropdownButton CLICK");
-        console.log("Clicked Button:", clickedItem); // Affiche l'élément exact
+        console.log("Clicked Button:", clickedButton); // Affiche l'élément exact
+        console.log("Clicked button span title:", clickedSpan); // Affiche l'élément exact
         console.log("Associated Dropdown:", dropdownContent); // Affiche le parent dropdown
 
         // Appeler une fonction avec l'élément cliqué
-        toggleDropdown(dropdownContent,clickedItem,associatedArrow);
+        toggleDropdown(dropdownContent,clickedButton,associatedArrow);
     });
 });
 
@@ -715,17 +627,12 @@ dropdownButtons.forEach(item => {
 //
 /////////////////////////////////////////////////////////////////
 
+const searchBarMaxLength = 20;
 const constituant = ['ingredient', 'appliance', 'ustensil'];
 console.log("DEBUT de Programme: calling displayRecipes")
 displayRecipes(recipes);
 
-// Initialisation pour chaque liste déroulante
-/*
-constituant.forEach(type => {
-    console.log(`Init: calling updateItemLabels for ${type}`); // Mettre les items dans la dropdown list 
-    updateItemLabels(recipes);
-});*/
-
+// Initialisation pour chaque liste déroulante avec updateItemLabels
 console.log("Init: calling updateItemLabels(recipes)"); // Mettre les items dans la dropdown list 
 updateItemLabels(recipes);
 
@@ -736,3 +643,18 @@ searchBarInput.value = '';
 
 
 
+function liveIngredientAdding (recipe,recipeHTML) { 
+    recipe.ingredients.forEach(item => {
+        let unitSiExist;
+        let quantitySiExist;
+        
+        if (!item.unit) { // Vérifie si le champ unité (ex: kg,ml,mn ... ) existe
+            unitSiExist = ""; // le champ unité n'existe pas, mettre une chaîne vide dans unitSiExist
+        } else {
+            unitSiExist =  item.unit;
+        }
+
+        quantitySiExist = (!item.quantity) ? "" : item.quantity;
+        recipeHTML += `<li><span class="ingredient-name">${item.ingredient}</span><br>${quantitySiExist} ${unitSiExist}</li>`;
+    });
+}
