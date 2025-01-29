@@ -34,10 +34,10 @@ header h1 {
     position: relative;
     top: 320px;
     font-family: 'Arial';
-    font-size: 1.5em;
-    font-weight: bold;
+    font-size: 2rem;
+    font-weight: 900;
     line-height: 1.4;
-    width: 55vw;
+    width: 45vw;
     color:hsla(49, 96%, 53%, 0.937);
     margin: auto;
     z-index: 10;
@@ -98,9 +98,9 @@ header input {
     display: grid;
     grid-template-columns: 15vw 15vw 15vw 1fr;
     column-gap: 10px;
-    width: calc(100% - var(--avancee-margin));
+    width: calc(100% - 2*var(--avancee-margin) - 10px);
     background-color: #bebebe;
-    padding: 18px 0 10px var(--avancee-margin);
+    padding: 18px var(--avancee-margin) 10px calc(var(--avancee-margin) + 10px);
     margin: 0;
 }
 
@@ -142,7 +142,7 @@ header input {
 }
 
 #nbRecettes {
-    margin-right: var(--avancee-margin);
+    margin-right: 0;
     font-weight: bold;
 }
 
@@ -162,8 +162,8 @@ header input {
     justify-content: space-between;
     margin-bottom: 10px;
     background-color: #fdfdfd; /*#3498db;*/
-    width: calc(70%);
-    padding: 15px 0 15px 8px;
+    width: calc(65%);
+    padding: 18px 0 18px 8px;
     margin : 0;
     margin-top: 16px;
     border: none;
@@ -207,7 +207,7 @@ header input {
 
 .dropdown-content {
     position: absolute;
-    width: calc(70%);
+    width: calc(65%);
     background-color: #fdfdfd/*#f5e485*/;
     z-index: 1;
         /* Animation */
@@ -219,7 +219,7 @@ header input {
 }
 
 .dropdown-content.open {
-    width: calc(70% - 10px);
+    width: calc(65% - 10px);
     max-height: 14em;
     overflow: scroll;
     padding: 0px;
@@ -268,7 +268,7 @@ header input {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    padding:10px 0 10px var(--avancee-margin);
+    padding:10px 0 10px calc(var(--avancee-margin) + 10px);
     background-color: #bebebe;
 }
 
@@ -281,7 +281,7 @@ header input {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    width: 9vw;
+    width: 11%;
 }
 
 .selected-items-tag button {
@@ -301,11 +301,11 @@ header input {
 .recipes-container {
     position: relative;
     top: 0px;
-    width : calc(100% - 2*var(--avancee-margin)-20px);
+    width : calc(100% - 2*var(--avancee-margin)-10px);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; /* 3 columns */
     gap: 20px;
-    /*justify-content: center; /* Aligne les recettes au centre */
+    justify-items : center; /* Aligne les recettes au centre */
     padding: 20px var(--avancee-margin) 20px 80px;
     background-color: #bebebe;
 }
