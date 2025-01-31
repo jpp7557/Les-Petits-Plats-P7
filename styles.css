@@ -2,6 +2,7 @@
     --main-margin: 10vw;
     --header-height: 660px;
     --avancee-margin: 70px;
+    --large-header-height: 35vh;
 
 }
 body {
@@ -24,6 +25,7 @@ header {
     text-align: center;
     margin-left: 0px;
     height: 605px;
+    /*height: 65vh;*/
     background-image: url('image-du-header.jpg');
     background-size: cover;
     background-position: center;
@@ -32,16 +34,17 @@ header {
 
 header h1 {
     position: relative;
-    top: 320px;
-    font-family: 'Arial';
-    font-size: 2rem;
-    font-weight: 900;
-    line-height: 1.4;
-    width: 45vw;
+    top: 45%;
+    font-family: Anton,sans-serif;
+    /*font-size: 34px;*/
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: bold;
+    line-height: 1.5;
+    width: 50vw;
     color:hsla(49, 96%, 53%, 0.937);
     margin: auto;
     z-index: 10;
-    letter-spacing: -0.5px; /* Espacement réduit */
+    letter-spacing: -3px; /* Espacement réduit */
 }
 
 header input {
@@ -57,14 +60,14 @@ header input {
 }
 
 .search-bar-container {
-    position: relative; /* Pour positionner l'icône par rapport au conteneur */
-    top: 320px;
+    position: relative; /* Pour positionner la loupe par rapport au conteneur */
+    top: 45%;
     max-width: 954px; /* Largeur spécifique */
     width: 60vw;
     height: 58px; /* Hauteur spécifique */
     margin: 0 auto; /* Centré horizontalement */
     border-radius: 10px;
-    overflow: hidden; /* Pour garder l'icône à l'intérieur du champ */
+    overflow: hidden; /* Pour garder la loupe à l'intérieur du champ */
     background: white;
     display: flex;
     align-items: center;
@@ -74,12 +77,16 @@ header input {
 
 /* Champ de saisie */
 #search-bar-input {
-    flex: 1; /* Occupe tout l'espace sauf celui réservé pour l'icône */
+    display: flex;
+    width: 85%;
+    font-family: Anton,sans-serif;
+    font-size: clamp(1rem, 2vw, 2.5rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
     height: 100%;
     border: none;
     outline: none;
     padding: 10px 20px 10px 20px; /* Espacement interne */
-    font-size: 18px;
     box-sizing: border-box;
     border-radius: 5px 0 0 5px; /* Garde les coins arrondis à gauche */
 }
@@ -87,17 +94,17 @@ header input {
 .search-icon {
     width: 32px;
     height: 32px;
-    margin-right: 5px; /* Espace entre l'icône et le bord droit */
+    margin-right: 15px; /* Espace entre l'icône et le bord droit */
     fill: white; /* Couleur de l'icône */
     pointer-events: none; /* Empêche l'interaction avec l'icône */
     background-color: black;
-    border-radius: 5px; /* Garde les coins arrondis à gauche */
+    border-radius: 7px; /* Garde les coins arrondis à gauche */
 }
 
 #rechercheAvancee {
     display: grid;
     grid-template-columns: 15vw 15vw 15vw 1fr;
-    column-gap: 10px;
+    column-gap: 0.8vw;
     width: calc(100% - 2*var(--avancee-margin) - 10px);
     background-color: #bebebe;
     padding: 18px var(--avancee-margin) 10px calc(var(--avancee-margin) + 10px);
@@ -160,19 +167,18 @@ header input {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
-    background-color: #fdfdfd; /*#3498db;*/
-    width: calc(65%);
+    width: calc(80%);
     padding: 18px 0 18px 8px;
     margin : 0;
     margin-top: 16px;
+    background-color: white; /*#3498db;*/
     border: none;
     cursor: pointer;
     border-radius: 10px;
 }
 
 .dropdown-button:hover {
-    background-color: #888885 /*#2980b9;*/
+    background-color: #e0e0c4 /*#2980b9;*/
 }
 
 .dropdown-button.open {
@@ -207,9 +213,10 @@ header input {
 
 .dropdown-content {
     position: absolute;
-    width: calc(65%);
+    top : 100%;
+    /*display: none;*/
+    width: calc(80%);
     background-color: #fdfdfd/*#f5e485*/;
-    z-index: 1;
         /* Animation */
         opacity: 0;
         visibility: hidden;
@@ -219,13 +226,16 @@ header input {
 }
 
 .dropdown-content.open {
-    width: calc(65% - 10px);
+    top : 100%;
+    width: 80%;
     max-height: 14em;
     overflow: scroll;
     padding: 0px;
-    padding-right:10px;
+    padding-right:0px;
+    margin-top: -1px;
     border-radius: 0 0 5px 5px;
     border: none;
+    z-index: 10;
     opacity: 1;
     visibility: visible;
     transform: scaleY(1); /* ouverture de la liste */
@@ -254,8 +264,8 @@ header input {
 .ustensil-search {
     position: sticky;
     top: 5px;
-    max-width:calc(90% - 14px);
-    font-size: 0.9rem;
+    max-width:calc(75%);
+    font-size: 0.8rem;
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 8px;
@@ -273,6 +283,7 @@ header input {
 }
 
 .selected-items-tag {
+    width: 11%;
     font-size: 0.8rem;
     padding: 10px 15px;
     background-color: #ffd15b;
@@ -281,7 +292,6 @@ header input {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    width: 11%;
 }
 
 .selected-items-tag button {
@@ -305,6 +315,7 @@ header input {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; /* 3 columns */
     gap: 20px;
+    column-gap: 2vh;
     justify-items : center; /* Aligne les recettes au centre */
     padding: 20px var(--avancee-margin) 20px 80px;
     background-color: #bebebe;
@@ -320,7 +331,7 @@ header input {
     height: 650px;  /* 2025/01/27 ajout */
     /*max-width: 400px;*/ /* Largeur maximale pour éviter de trop grandes cartes */
     /*max-height: 700px;*/ /* 2025/01/27 supprime */
-    padding: 20px;
+    padding: 2vh;
     padding-top: 0;
     margin-top: 10px;
     text-align: center;
@@ -328,9 +339,9 @@ header input {
 }
 
 .recette-card img {
-    width: calc(100% + 40px);
+    width: calc(100% + 4.2vh);
     margin-top: -2px;
-    margin-left: -20px;
+    margin-left: -2.1vh;
     height: 33%;
     object-fit: cover;
     border-radius: 16px 16px 0 0;
@@ -404,10 +415,139 @@ p.duree {
     color: #222;
 }
 
-/* Pied de page */
-footer {
-    text-align: center;
-    padding: 20px;
-    background: #333;
-    color: white;
+@media (max-width: 1024px) {
+
+    header h1 {
+        width: 65vw;
+    }
+    .search-bar-container {
+        width: 65vw;
+        height: 48px; /* Adjust height */
+    }
+    .recipes-container {
+        grid-template-columns: 1fr 1fr;
+        padding: 10px 30px;
+    }
+    .dropdown {
+        width: 100%; /* Full width */
+    }
+    .dropdown-content {
+        width: 100%;
+    }
+    .dropdown-button {
+        width: 100%;
+        padding: 14px 8px 14px 8px;
+    }
+    .dropdown-content.open {
+        width: calc(100%);
+    }
+    .dropdown-button span {
+        font-size: 0.8rem;
+        padding-left: 6px;
+    }
+    .search-bar-container input {
+        font-size: 0.8rem;
+        padding: 12px;
+    }
+    #rechercheAvancee {
+        column-gap: 2vw;
+        padding: 18px calc(0.5*var(--avancee-margin)) 10px calc(0.5*var(--avancee-margin));
+        width: calc(100% - var(--avancee-margin));
+    }
+    .selected-items-container {
+        padding:10px 0 10px calc(0.5*var(--avancee-margin));
+    }
+}
+
+
+@media (max-width: 1300px) {
+
+    header h1 {
+        width: 65vw;
+        /*font-size: 2rem; */
+    }
+    .search-bar-container {
+        width: 65vw;
+        height: 48px; 
+    }
+}
+
+@media (max-width: 790px) {
+    #rechercheAvancee {
+        grid-template-columns: 1fr 1fr;
+        column-gap: 2vh;
+        padding: 18px calc(0.5*var(--avancee-margin)) 10px calc(0.5*var(--avancee-margin));
+        width: calc(100% - var(--avancee-margin));
+    }
+    .recipes-container {
+        padding: 10px;
+        column-gap: 0.1vh;
+    }
+
+    .dropdown-content.open {
+        width: calc(100%);
+        padding: 14px 1px 14px 0px;
+    }
+    .selected-items-tag {
+        padding: 10px 15px;
+        gap: 8px;
+        width: 20%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    header h1 {
+        width: 65vw;
+        font-size: clamp(0.9rem, 3.5vw, 34px);
+        letter-spacing: -2px; /* Espacement réduit */
+    }
+    .search-bar-container {
+        width: 65vw;
+        height: 48px; 
+    }
+    p.duree {
+        right: -65%;
+    }
+}
+
+@media (max-width: 500px) {
+    header {
+        height: 30vh; 
+    }
+    header h1 {
+        width: 65vw;
+    }
+    .search-icon {
+        width: 24px;
+        height: 24px;
+    }
+    .recipes-container {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+    .recette-card {
+        height:fit-content;
+    }
+    .recette-card img {
+        height: 25vh;
+    }
+    .selected-items-tag {
+        padding: 10px 15px;
+        gap: 8px;
+        width: 25%;
+    }
+    p.duree {
+        top: -24vh;
+        right: -80%
+    }
+}
+
+@media (max-width: 420px) {
+    #rechercheAvancee {
+        grid-template-columns: 1fr;
+        column-gap: 2vh;
+        padding: 18px calc(0.5*var(--avancee-margin)) 10px calc(0.5*var(--avancee-margin));
+        width: calc(100% - var(--avancee-margin));
+    }
 }
