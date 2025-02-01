@@ -43,8 +43,8 @@ header {
 
 header h1 {
     position: relative;
-    top: 10%;
-    left: -5%;
+    top: 12%;
+    left: -2%;
     font-family: Anton,sans-serif;
     font-size: clamp(1.5rem, 3.5vw, 2rem);
     font-weight: bold;
@@ -71,8 +71,8 @@ header input {
 .search-bar-container {
     display: flex;
     position: relative; /* Pour positionner la loupe par rapport au conteneur */
-    top: 10%;
-    left: -5%;
+    top: 12%;
+    left: -2%;
     max-width: 954px; /* Largeur spécifique */
     width: 70vw;
     height: 58px; /* Hauteur spécifique */
@@ -104,7 +104,7 @@ header input {
 .search-icon {
     width: 32px;
     height: 32px;
-    margin-left: 7vw; /* Espace entre l'icône et le bord droit */
+    margin-left: 6vw; /* Espace entre l'icône et le bord droit */
     fill: white; /* Couleur de l'icône */
     pointer-events: none; /* Empêche l'interaction avec l'icône */
     background-color: black;
@@ -292,14 +292,14 @@ header input {
 }
 
 .selected-items-tag {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 11%;
     font-size: 0.8rem;
     padding: 10px 15px;
     background-color: #ffd15b;
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 8px;
 }
 
@@ -429,7 +429,6 @@ p.duree {
 
     header h1 {
         width: 65vw;
-        /*font-size: 2rem; */
     }
     .search-bar-container {
         width: 65vw;
@@ -439,12 +438,17 @@ p.duree {
 
 @media (max-width: 1024px) {
 
-    header h1 {
-        width: 65vw;
+    #search-bar-input {
+        font-size: 0.8rem;
+        padding: 12px;
     }
-    .search-bar-container {
-        width: 65vw;
-        height: 48px; /* Adjust height */
+    .search-icon {
+        margin-right: 1.5vw; /* Espace entre l'icône et le bord droit */
+    }
+    #rechercheAvancee {
+        column-gap: 2vw;
+        padding: 18px calc(0.5*var(--avancee-margin)) 10px calc(0.5*var(--avancee-margin));
+        width: calc(100% - var(--avancee-margin));
     }
     .recipes-container {
         grid-template-columns: 1fr 1fr;
@@ -453,12 +457,12 @@ p.duree {
     .dropdown {
         width: 100%; /* Full width */
     }
-    .dropdown-content {
-        width: 100%;
-    }
     .dropdown-button {
         width: 100%;
         padding: 14px 8px 14px 8px;
+    }
+    .dropdown-content {
+        width: 100%;
     }
     .dropdown-content.open {
         width: calc(100%);
@@ -467,51 +471,29 @@ p.duree {
         font-size: 0.8rem;
         padding-left: 6px;
     }
-    .search-bar-container input {
-        font-size: 0.8rem;
-        padding: 12px;
-    }
-    #rechercheAvancee {
-        column-gap: 2vw;
-        padding: 18px calc(0.5*var(--avancee-margin)) 10px calc(0.5*var(--avancee-margin));
-        width: calc(100% - var(--avancee-margin));
-    }
     .selected-items-container {
         padding:10px 0 10px calc(0.5*var(--avancee-margin));
     }
 }
 
-@media (max-width: 790px) {
+@media (max-width: 800px) {
+
+    .search-icon {
+        margin-right: 2vw; /* Espace entre l'icône et le bord droit */
+    }
     #rechercheAvancee {
         grid-template-columns: 1fr 1fr;
         column-gap: 2vh;
-        padding: 18px calc(0.5*var(--avancee-margin)) 10px calc(0.5*var(--avancee-margin));
-        width: calc(100% - var(--avancee-margin));
     }
     .recipes-container {
         padding: 10px;
         column-gap: 0.1vh;
         grid-auto-rows: 1fr; /* Ensures each row has the same height */
     }
-    .recette-card {
-        width: calc(82%);
-        padding: 2vw;
-    }
-    .recette-card img {
-        position: relative;
-        top: 0;
-        /*width: calc(113%);
-        margin-top: -7%;
-        margin-left: calc(-7% + 1px);*/
-    }
-
     .dropdown-content.open {
-        width: calc(100%);
         padding: 14px 1px 14px 0px;
     }
     .selected-items-tag {
-        padding: 10px 15px;
-        gap: 8px;
         width: 20%;
     }    
 }
@@ -544,21 +526,11 @@ p.duree {
         grid-template-columns: 1fr;
         padding: 10px;
     }
-    .recette-card {
-        width: 82%;
-        height:fit-content;
-    }
     .recette-card img {
         height: 25vh;
-        position: relative;
-        top: 0;
-        width: calc(107%);
-        margin-top: -4%;
-        margin-left: calc(-4% + 1px);    
     }
+
     .selected-items-tag {
-        padding: 10px 15px;
-        gap: 8px;
         width: 25%;
     }
     p.duree {
