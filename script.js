@@ -44,10 +44,92 @@ function displayRecipes(filteredRecipes) {
             `;
         }) 
         ingredientsHTML = ingredientsHTML.join(''); // Join all ingredients into one string
-        /* comment to keep
+        // comment to keep
             //console.log(" AFTER join() recipe :  ", recipe.name, "\n              ingredients:", ingredientsHTML);
-        */
-    //2. using join() to Join all recipes into one string and return the DOM to recette-card 
+        // comment to keep END
+    //2. For each recipe, return the created DOM below; The "join()" method is used to Join all recipes into one string.
+    /*
+    console.log("to be return for :",recipe.name,
+             `
+                <div class="recette-card">
+                    <img 
+                        class="img-recette" 
+                        src="../Newphotos/recipes/${imgSource}" 
+                        alt="Photo de la recette ${recipe.name}">
+                    <p class=duree>${recipe.time}min</p>
+                    <h2>${recipe.name}</h2>
+                    <h3 class="recette">RECETTE</h3>
+                    <p>${recipe.description}</p>
+                    <h3>INGREDIENTS</h3>
+                    <ul class="ingredients-list">
+                        ${ingredientsHTML}
+                    </ul>
+                </div>
+            `);
+    */
+    return `
+            <div class="recette-card">
+                <img 
+                    class="img-recette" 
+                    src="../Newphotos/recipes/${imgSource}" 
+                    alt="Photo de la recette ${recipe.name}">
+                <p class=duree>${recipe.time}min</p>
+                <h2>${recipe.name}</h2>
+                <h3 class="recette">RECETTE</h3>
+                <p>${recipe.description}</p>
+                <h3>INGREDIENTS</h3>
+                <ul class="ingredients-list">
+                    ${ingredientsHTML}
+                </ul>
+            </div>
+        `;
+    }).join(''); // Join all recipes into one string
+
+    //console.log("recipesHTML final :",recipesHTML);
+
+    // Update the DOM once for all recipes inside the "filteredRecipes"
+    recipesContainer.innerHTML = recipesHTML;
+
+    // Update the recipe count
+    nbRecettesTrouvees.textContent = `${filteredRecipes.length} Recettes`;
+}
+
+//  /01/02/2025 BEGIN
+
+/*function displayRecipes(filteredRecipes) {
+    console.log("***28/01/2025:  NEW displayRecipes");
+    
+    // vider le container
+    recipesContainer.innerHTML = '';
+    
+    // Handle empty recipe list
+    if (filteredRecipes.length === 0) {
+        nbRecettesTrouvees.textContent = "0 Recettes";
+        recipesContainer.innerHTML = '<p>Aucune recette trouvée.</p>';
+        return;
+    }
+
+    //1. using map() and join() to Create a single string for ingredients of each recipe
+    const recipesHTML = filteredRecipes.map(recipe => {
+        const imgSource = recipe.id < 10 
+            ? `Recette0${recipe.id}.jpg` 
+            : `Recette${recipe.id}.jpg`;
+
+        let ingredientsHTML = recipe.ingredients.map(item => {
+            const unit = item.unit || ""; // Default to empty if unit is missing
+            const quantity = item.quantity || ""; // Default to empty if quantity is missing
+            return `
+                <li>
+                    <span class="ingredient-name">${item.ingredient}</span><br>
+                    ${quantity} ${unit}
+                </li>
+            `;
+        }) 
+        ingredientsHTML = ingredientsHTML.join(''); // Join all ingredients into one string
+        // comment to keep
+            console.log(" AFTER join() recipe :  ", recipe.name, "\n              ingredients:", ingredientsHTML);
+        // comment to keep END
+    //2. For each recipe, return the created DOM below; The "join()" method is used to Join all recipes into one string.
     return `
                 <div class="recette-card">
                     <img 
@@ -71,57 +153,8 @@ function displayRecipes(filteredRecipes) {
 
     // Update the recipe count
     nbRecettesTrouvees.textContent = `${filteredRecipes.length} Recettes`;
-}
-
-//  28/01/2025 BEGIN
-/*
-function displayRecipes(filteredRecipes) {
-    console.log("*** displayRecipes");
-    recipesContainer.innerHTML = ''; // Vider le conteneur
-    if (filteredRecipes.length === 0) {
-        nbRecettesTrouvees.textContent = "0 Recettes";
-        recipesContainer.innerHTML = '<p>Aucune recette trouvée.</p>';
-        return;
-    }
-    filteredRecipes.forEach(recipe => {        
-
-        imgsource = recipe.id < 10 ? `Recette0${recipe.id}.jpg` : `Recette${recipe.id}.jpg`
-
-        let recipeHTML = `
-            <div class="recette-card">
-                <img class="img-recette" src="../Newphotos/recipes/${imgsource}" alt="${recipe.name}">
-                <h2>${recipe.name}</h2>
-                <h3 class="recette">RECETTE</h3>
-                <p>${recipe.description}</p>
-                <h3>INGREDIENTS</h3>
-                <ul class="ingredients-list">
-            `;    
-                recipe.ingredients.forEach(item => {
-                    
-                    let unitSiExist;
-                    let quantitySiExist;
-                    
-                    if (!item.unit) { // Vérifie si le champ unité (ex: kg,ml,mn ... ) existe
-                        unitSiExist = ""; // le champ unité n'existe pas, mettre une chaîne vide dans unitSiExist
-                    } else {
-                        unitSiExist =  item.unit;
-                    }
-
-                    quantitySiExist = (!item.quantity) ? "" : item.quantity;
-                    recipeHTML += `<li><span class="ingredient-name">${item.ingredient}</span><br>${quantitySiExist} ${unitSiExist}</li>`;
-                });
-        // Fermeture de la liste et du conteneur
-        recipeHTML += `
-                    </ul>
-            </div>
-            `;
-        // Ajouter la carte complète dans le conteneur
-        recipesContainer.innerHTML += recipeHTML;    
-    });
-    nbRecettesTrouvees.textContent = `${filteredRecipes.length} Recettes`;
-}
-*/
-//  28/01/2025 END
+}*/
+//  01/02/2025 END
 
 
 
@@ -240,9 +273,9 @@ function removeSelectedItemTag(item,itemType) {
     });
 }
 
-function removeSelectedItemFromList(item,itemType,myList) {
+function resetHightlight(item,itemType,myList) {
     console.log("myList")
-    let listUpdated ;
+    let listUpdated ;  // useless, only for console.log
     switch (itemType) {
         case 'ingredient' :
             selectedIngredients = myList.filter(param => param !== item);
@@ -262,7 +295,7 @@ function removeSelectedItemFromList(item,itemType,myList) {
     console.log("24/01/2025: list Updated",listUpdated);
 }
 
-// MAJ de Array des recettes en fonction des selectedIngredients (Array des ingrédients selectionnés)
+// MAJ des recettes en fonction des selectedIngredients... (Array des ingrédients selectionnés)
 function selectedRecette(selectedIngredients, selectedUstensils, selectedAppliances) {
     let selectedRecipes = recipes;
 
@@ -270,7 +303,7 @@ function selectedRecette(selectedIngredients, selectedUstensils, selectedApplian
     if (searchBarInput.value.length >= 3) {
         let query = searchBarInput.value
         .replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '"') // Remplace les caractères non autorisés par le tréma: '"'
-        .slice(0, searchBarMaxLength);       // Limite la longueur
+        .slice(0, searchBarMaxLength);        // Limite la longueur
         query = query.toLowerCase();
         console.log("Filtering by search input:", query);
         selectedRecipes = filterRecipes(query, selectedRecipes);
@@ -279,7 +312,7 @@ function selectedRecette(selectedIngredients, selectedUstensils, selectedApplian
 
     // Filter by selected ingredients
     if (selectedIngredients && selectedIngredients.length > 0) {
-        console.log("Filtering by selectedIngredients:", selectedIngredients.length);
+        //console.log("Filtering by selectedIngredients:", selectedIngredients.length);
         selectedRecipes = selectedRecipes.filter(recette =>
             selectedIngredients.every(selectedIngredient =>
                 recette.ingredients.some(item => item.ingredient === selectedIngredient)
@@ -290,7 +323,7 @@ function selectedRecette(selectedIngredients, selectedUstensils, selectedApplian
 
     // Filter by selected utensils
     if (selectedUstensils && selectedUstensils.length > 0) {
-        console.log("Filtering by selectedUstensils:", selectedUstensils.length);
+        //console.log("Filtering by selectedUstensils:", selectedUstensils.length);
         selectedRecipes = selectedRecipes.filter(recette =>
             selectedUstensils.every(selectedUstensil =>
                 recette.ustensils.includes(selectedUstensil)
@@ -301,7 +334,7 @@ function selectedRecette(selectedIngredients, selectedUstensils, selectedApplian
 
     // Filter by selected appliances
     if (selectedAppliances && selectedAppliances.length > 0) {
-        console.log("Filtering by selectedAppliances:", selectedAppliances.length);
+        //console.log("Filtering by selectedAppliances:", selectedAppliances.length);
         selectedRecipes = selectedRecipes.filter(recette =>
             selectedAppliances.every(selectedAppliance =>
                 recette.appliance === selectedAppliance
@@ -309,7 +342,7 @@ function selectedRecette(selectedIngredients, selectedUstensils, selectedApplian
         );
         console.log("Remaining recipes after filtering appliances:", selectedRecipes.length);
     }
-
+    updateItemLabels(selectedRecipes);
     return selectedRecipes;
 }
 
@@ -350,14 +383,14 @@ function settingItemList(itemList, filtered, selectedItems, itemType) {
         const itemListLi = document.createElement('li');  //itemListLi: label
         //itemListLi.textContent = item;
 
-        // Si l'ingrédient est sélectionné (dans la liste selectedItems), cochez la case
+        // Si l'item (ingredient,appareil,ustensile) est sélectionné (dans la liste selectedItems), cochez la case
         if (selectedItems.includes(item)) {
             itemListLi.classList.add('highlighted');  // choisir '#f3bd1f'
         }
 
         itemListLi.appendChild(document.createTextNode(` ${item}`));
         itemList.appendChild(itemListLi);
-
+        // add Event qd on clique sur un item dans une des listes déroullantes 
         itemListLi.addEventListener('click', (e) => {
             e.stopPropagation();
             handleLiState(e.target, item, itemType, selectedItems);
@@ -367,12 +400,12 @@ function settingItemList(itemList, filtered, selectedItems, itemType) {
 }
 
 function handleLiState(target, item, itemType, selectedItems) {
-    if (target.querySelector('.highlighted') === null) {
+    if (target.querySelector('.highlighted') === null) {  //select the item: hightlight it
         if (!selectedItems.includes(item)) {
             selectedItems.push(item);
             addSelectedItemTag(item, itemType);
-        } else {
-            removeSelectedItemFromList(item, itemType, selectedItems);
+        } else {     //case when item is already selected (hightlighted): reset the selection
+            resetHightlight(item, itemType, selectedItems);
             removeSelectedItemTag(item, itemType);
         }
     }
@@ -484,6 +517,7 @@ function updateItemLabels(filteredRecipes) {
             dropdownContent = document.getElementById(`${type}-content`); // Sélectionner le contenu associé
             selectedItems = selectedUstensils;
         }
+        console.log("[03/02/2025]  ***** updateItemLabels",type,uniqueItems.length) ;
 
         //console.log("24/01/2025 in updateItemLabels dropdownContent has", dropdownContent.childNodes.length," children");
         dropdownContent.innerHTML = ''; // Vider les anciens labels
@@ -527,6 +561,11 @@ function updateRecipesAndItems(item,itemType) {
     console.log("In updateRecipesAndItems: calling updateItemLabels",item,itemType);
     updateItemLabels(filteredRecipes);
 }
+
+searchBarInput.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+});
 
 // Event 3 carac. sur la barre de recherche
 searchBarInput.addEventListener('input', (e) => {

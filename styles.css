@@ -14,7 +14,7 @@ body {
     margin: 0;
     padding : 0;
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     line-height: 1.6;
     color: #333;
@@ -34,13 +34,22 @@ header {
     padding: 0;
     text-align: center;
     margin-left: 0px;
-    height: 605px;
+    /*height: 605px;*/
+    height: clamp(45vw, 60vw, 660px);
     background-image: url('image-du-header.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
+.site-logo {
+    position: absolute;
+    top: 50px;
+    left: 60px;
+    width: 15%;
+    object-fit: cover;
+
+}
 header h1 {
     position: relative;
     top: 12%;
@@ -49,7 +58,7 @@ header h1 {
     font-size: clamp(1.5rem, 3.5vw, 2rem);
     font-weight: bold;
     line-height: 1.5;
-    width: 50vw;
+    width: 55vw;
     color:hsla(49, 96%, 53%, 0.937);
     z-index: 10;
     letter-spacing: -3px; /* Espacement réduit */
@@ -273,13 +282,14 @@ header input {
 .ustensil-search {
     position: sticky;
     top: 5px;
-    max-width:calc(75%);
+    width:80%;
     font-size: 0.8rem;
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 8px;
     margin-top: 10px;
     margin-left: 8px;
+    background-color: white;
 }
 
 /* //// 2.0 open  */
@@ -333,6 +343,7 @@ header input {
 
 /* Carte individuelle de recette */
 .recette-card {
+    position: relative; /* Ensure child elements use absolute positioning relative to this card */
     display: flex; /* Enables stretching */
     flex-direction: column; /* Stack content inside */
     font-family: 'Arial', sans-serif;
@@ -385,9 +396,9 @@ header input {
 }
 
 p.duree {
-    position: relative;
-    top : -170px;
-    right : -80%;
+    position: absolute; /* Now relative to .recette-card */
+    top: 20px;
+    right: 10px;
     background-color: #fde13f;
     width : 50px;
     padding : 5px;
@@ -437,9 +448,10 @@ p.duree {
 }
 
 @media (max-width: 1024px) {
-
+    header h1 {
+        font-size: clamp(0.8rem, 3vw, 30px);
+    }
     #search-bar-input {
-        font-size: 0.8rem;
         padding: 12px;
     }
     .search-icon {
@@ -474,10 +486,18 @@ p.duree {
     .selected-items-container {
         padding:10px 0 10px calc(0.5*var(--avancee-margin));
     }
+    * {
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 800px) {
 
+    .site-logo {
+        position: absolute;
+        top: 30px;
+        left: 40px;
+    }
     .search-icon {
         margin-right: 2vw; /* Espace entre l'icône et le bord droit */
     }
@@ -495,47 +515,54 @@ p.duree {
     }
     .selected-items-tag {
         width: 20%;
-    }    
+    }
+ 
 }
 
 @media (max-width: 600px) {
-
+   .site-logo {
+        min-width: 90px;
+    }
     header h1 {
         width: 65vw;
-        font-size: clamp(0.9rem, 3.5vw, 34px);
         letter-spacing: -2px; /* Espacement réduit */
     }
     .search-bar-container {
         width: 65vw;
         height: 48px; 
     }
-    p.duree {
-        right: -65%;
+    .recipes-container {
+        column-gap: 1px;
     }
 }
 
 @media (max-width: 550px) {
-    header {
-        height: 30vh; 
+    .site-logo {
+        position: absolute;
+        top: 20px;
     }
     .search-icon {
         width: 24px;
         height: 24px;
     }
+    .selected-items-tag {
+        width: 25%;
+    }
     .recipes-container {
         grid-template-columns: 1fr;
         padding: 10px;
     }
+    .recette-card {
+        width: 60%;
+        min-width: 280px;        
+    }
+    .recette-card h3,
+    .recette-card p
+    {
+        font-size: 0.8rem;
+    }
     .recette-card img {
-        height: 25vh;
-    }
-
-    .selected-items-tag {
-        width: 25%;
-    }
-    p.duree {
-        top: -24vh;
-        right: -80%
+        height: 15vh;
     }
 }
 
