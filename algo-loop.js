@@ -3,8 +3,10 @@
 //
 
 
-function filterRecipesOLD(query,argListRecettes) {
-    let debugTrace = true;
+function filterRecipes(query,argListRecettes) {
+console.time("Loop Excution Time");
+
+    let debugTrace = false;
     let resultat = []; // empty array at init
     query = query.toLowerCase();
     debugTrace && console.log("[filterRecipes] called");
@@ -49,14 +51,18 @@ function filterRecipesOLD(query,argListRecettes) {
         }
     }
 
-    debugTrace && console.log("algo loop filterRecipes Nb RECETTE :", resultat.length);
+    //debugTrace && console.log("algo loop filterRecipes Nb RECETTE :", resultat.length);
+console.timeEnd("Loop Excution Time");
+
     return resultat;
 }
 
 
 
-function filterRecipes(query,argListRecettes) {
-    let debugTrace = true;
+function filterRecipesArray(query,argListRecettes) {
+console.time("ARRAY Excution Time");
+
+    let debugTrace = false;
 
     let resultat = argListRecettes; // at init: all recipes
     query = query.toLowerCase();
@@ -79,6 +85,7 @@ function filterRecipes(query,argListRecettes) {
         return nameMatch || descriptionMatch || ingredientsMatch;
     });
     console.log("*** Algo array, Nb RECETTES: ", resultat.length);
+console.timeEnd("ARRAY Excution Time");
     return resultat;
 }
     
