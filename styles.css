@@ -24,6 +24,7 @@ body {
 
 /* Centrage et style de la barre de recherche */
 header {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;  /* Centers vertically */
@@ -45,7 +46,7 @@ header {
 .site-logo {
     position: absolute;
     top: 50px;
-    left: 5rem;
+    left: 60px;
     width: 15%;
     object-fit: cover;
 
@@ -438,13 +439,6 @@ p.duree {
 .ingredient-name {
     color: #222;
 }
-
-
-@media (min-width: 1540px) {
-
-    .site-logo {
-        left: 10vw;
-    }
 
 @media (max-width: 1024px) {
     #search-bar-input {
