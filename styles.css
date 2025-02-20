@@ -396,7 +396,7 @@ header h1 {
     line-height: 1.2;
     color: #666;
     max-height: 5em;
-    overflow:hidden;
+    overflow: scroll;
     text-align: left;
     padding: 20px; 
     margin-top: 0;
