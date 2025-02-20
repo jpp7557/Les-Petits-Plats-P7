@@ -36,7 +36,7 @@ header {
     margin-left: 0px;
     /*height: 605px;*/
     height: clamp(45vw, 60vw, 660px);
-    background-image: url('image-du-header.jpg');
+    background-image: url('../assets/image-du-header.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -45,7 +45,7 @@ header {
 .site-logo {
     position: absolute;
     top: 50px;
-    left: 60px;
+    left: 5rem;
     width: 15%;
     object-fit: cover;
 
@@ -339,7 +339,8 @@ header h1 {
     display: flex;
     flex-wrap: wrap;
     align-items: stretch; /* Forces all grid items to take the same height */
-    column-gap: 1vw;
+    column-gap: 0vw;
+    row-gap: 25px;
     justify-content : space-around; /* Aligne les recettes au centre */
     padding: 20px 60px;
     background-color: #bebebe;
@@ -354,7 +355,7 @@ header h1 {
     background: white;
     border: 1px solid #ddd;
     border-radius: 16px;
-    width : 28%;    /* pour afficher 3 cartes par rangée */
+    width : 26%;    /* pour afficher 3 cartes par rangée */
     padding: 10px;
     padding-top: 0;
     margin-top: 10px;
@@ -396,6 +397,7 @@ header h1 {
     max-height: 5em;
     overflow:hidden;
     text-align: left;
+    padding: 20px; 
     margin-top: 0;
 }
 
@@ -419,19 +421,17 @@ p.duree {
 .ingredients-list {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 10px;
-}
-.ingredients-list {
+    column-gap: 30px;
     font-size: 14px;
     line-height: 1.2;
     list-style-type: none; /* Supprime les puces */
-    padding: 0; /* Retire le padding par défaut du <ul> */
+    padding: 20px; /* Retire le padding par défaut du <ul> */
     margin: 0; /* Retire la marge par défaut du <ul> */
     text-align: left;
 }
 
 .ingredients-list li {
-    margin-bottom: 10px;
+    margin-bottom: 25px;
     color: #666;
 }
 
@@ -439,18 +439,13 @@ p.duree {
     color: #222;
 }
 
-/*
-@media (max-width: 1300px) {
 
-    header h1 {
-        width: 65vw;
+@media (min-width: 1540px) {
+
+    .site-logo {
+        left: 10vw;
     }
-    .search-bar-container {
-        width: 65vw;
-        height: 48px; 
-    }
-}
-*/
+
 @media (max-width: 1024px) {
     #search-bar-input {
         padding: 12px;
@@ -491,6 +486,16 @@ p.duree {
     * {
         font-size: 0.9rem;
     }
+}
+
+@media (max-width: 980px) {
+    .recette-card p {
+        padding: 10px; 
+    }
+    .ingredients-list {
+        padding: 10px; 
+    }
+
 }
 
 @media (max-width: 800px) {
