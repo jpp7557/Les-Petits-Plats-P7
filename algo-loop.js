@@ -6,7 +6,7 @@ function filterRecipes(query,argListRecettes) {
         let debugTrace = false;
         let resultat = []; // empty array at init
         query = query.toLowerCase();
-        debugTrace && console.log("[filterRecipes] called");
+        //debugTrace && console.log("[filterRecipes] called");
     
         for (let i = 0; i < argListRecettes.length; i++) {
             const recipe = argListRecettes[i];
@@ -50,6 +50,6 @@ function filterRecipes(query,argListRecettes) {
             }
         }
     
-        debugTrace && console.log("algo loop filterRecipes Nb RECETTE :", resultat.length);
+        //debugTrace && console.log("algo loop filterRecipes Nb RECETTE :", resultat.length);
         return resultat;
     }
