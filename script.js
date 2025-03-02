@@ -2,6 +2,7 @@
 
 // Référence aux éléments HTML
 const searchBarInput = document.getElementById('search-bar-input');
+const clearBtn = document.getElementById("clearButton");
 const recipesContainer = document.getElementById('recipes-container');
 const nbRecettesTrouvees = document.getElementById('nbRecettes');
 const selectedItemsContainer = document.getElementById('selected-items-container');
@@ -334,15 +335,22 @@ function itemBarSearchEvents(itemSearch, itemList, uniqueItems, selectedItems, t
     });
 
     itemSearch.addEventListener('keyup', (e) => {
+        itemSearch.nextSibling.style.display = "block";
         const query = e.target.value.toLowerCase();
         const filteredItems = uniqueItems.filter(item =>
             item.toLowerCase().includes(query)
         );
         console.log("23/01/25:  settingItemList dans itemBarSearchEvents ")
-        console.log(`23/01/25:  Keyup in search bar for ${type}: ${query}`);
         // Logic for keyup
         settingItemList(itemList, filteredItems, selectedItems, type);
     });
+
+    itemSearch.nextSibling.addEventListener('click', (e) => {
+        itemSearch.nextSibling.style.display = "none";
+        itemSearch.value = '';
+        settingItemList(itemList, uniqueItems, selectedItems, type);
+    });
+
 }
 
 function updateItemLabels(filteredRecipes) {    
@@ -375,10 +383,15 @@ function updateItemLabels(filteredRecipes) {
         searchWrapper.className = 'search-wrapper'; 
         // Créer la barre de recherche
         const itemSearch = document.createElement('input');
-        itemSearch.className = `${type}-search`;
+        itemSearch.className = `${type}-search itemSearchBar`;
         itemSearch.type = 'text';
         itemSearch.placeholder = ``;
 
+        // create the suppress button 'X'
+        const itemClearBtn = document.createElement('button');
+        itemClearBtn.className = 'itemClear-btn';
+        itemClearBtn.textContent = 'X';
+        
         // Create the SVG icon
         const searchIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         searchIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
@@ -397,6 +410,7 @@ function updateItemLabels(filteredRecipes) {
         `;
 
         searchWrapper.appendChild(itemSearch);
+        searchWrapper.appendChild(itemClearBtn);
         searchWrapper.appendChild(searchIcon);
         dropdownContent.appendChild(searchWrapper);
 
@@ -442,8 +456,8 @@ searchBarInput.addEventListener('click', (e) => {
 searchBarInput.addEventListener('input', () => {
     console.log("*** Event searchBarInput")
 
+    clearBtn.style.display = "block"
     let filteredRecipes = [];
-
     filteredRecipes = recipes;
 
     ////////////////////
@@ -457,6 +471,24 @@ searchBarInput.addEventListener('input', () => {
     //04/02 
 
 });
+
+// 
+clearBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    clearSearchBarInput();
+    clearBtn.style.display = "none"
+    filteredRecipes = selectedRecette(selectedIngredients, selectedUstensils, selectedAppliances);
+    displayRecipes(filteredRecipes);
+    updateItemLabels(filteredRecipes);
+});
+
+// gerer la suppression de l'entree DEBUT
+function clearSearchBarInput() {
+    searchBarInput.value = "";
+    searchBarInput.focus(); // Refocus the input after clearing
+}
+// gerer la suppression de l'entree Fin
+
 
 // ouvrir/fermer la liste déroulante
 function toggleDropdown(dropdownContent,dropdownItem,associatedArrow) {
@@ -533,6 +565,23 @@ dropdownButtons.forEach(item => {
     });
 });
 
+document.querySelectorAll(".itemSearchBar").forEach(input => {
+    const clearBtn = input.nextElementSibling; // The "×" button next to the input
+
+    input.addEventListener("input", () => {
+        console.log("item input Event");
+        clearBtn.style.display = input.value ? "block" : "none";
+    });
+
+    clearBtn.addEventListener("click", () => {
+        console.log("item input CLEAR Event");
+        input.value = ""; // Clear input
+        clearBtn.style.display = "none"; // Hide "×" button
+        input.focus(); // Refocus input
+    });
+});
+
+
 /////////////////////////////////////////////////////////////////
 //
 // Initialisation - Affiche toutes les recettes au chargement
@@ -550,5 +599,5 @@ displayRecipes(recipes);
 // Initialisation pour chaque liste déroulante avec updateItemLabels
 debugTrace && console.log("Init: calling updateItemLabels(recipes)"); // Mettre les items dans la dropdown list 
 updateItemLabels(recipes);
-
 debugTrace && console.log("Init: sortie de updateItemLabels");
+

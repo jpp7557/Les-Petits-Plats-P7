@@ -2,9 +2,7 @@
 // fichier algo-array.js
 //
 
-function filterRecipes(query,argListRecettes) {
-    console.time("ARRAY Excution Time");
-    
+function filterRecipes(query,argListRecettes) {    
         let debugTrace = false;
         let nameMatch;
         let descriptionMatch;
@@ -13,14 +11,17 @@ function filterRecipes(query,argListRecettes) {
         query = query.toLowerCase();
     
         // Filtrer les recettes en fonction des ingrédients sélectionnés
+        /*
         debugTrace && console.log("[IN filterRecipes ARRAY]");
         if (selectedIngredients.length > 0) {
             resultat = argListRecettes.filter(recette =>
                 selectedIngredients.every(selectedIngredient =>
-                    recette.ingredients.some(item => item.ingredient === selectedIngredient) // item étant l'ensemble des ingrédients d'une recette
+                    recette.ingredients.some(item => 
+                        item.ingredient === selectedIngredient) // item étant l'ensemble des ingrédients d'une recette
                 )
             );
         }
+        */
         resultat = resultat.filter(recipe => {
             if (nameMatch = recipe.name.toLowerCase().includes(query)) {
                 return nameMatch;
@@ -32,6 +33,5 @@ function filterRecipes(query,argListRecettes) {
             }
         });
         console.log("*** Algo array, Nb RECETTES: ", resultat.length);
-    console.timeEnd("ARRAY Excution Time");
         return resultat;
     }    

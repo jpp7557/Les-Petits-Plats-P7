@@ -8,6 +8,7 @@
 * {
     margin: 0;
     padding : 0;
+    font-family: manrope, sans-serif;
 }
 
 body {
@@ -58,11 +59,11 @@ header h1 {
     width: 65vw;
     font-family: Anton,sans-serif;
     font-size: clamp(1.5rem, 3.5vw, 44px);
-    font-weight: bold;
+    font-weight: light;
     line-height: 1.5;
     color:#fad014;
     z-index: 10;
-    letter-spacing: -4px; /* Espacement réduit */
+    letter-spacing: 0px; /* Espacement réduit */
 }
 
 .search-bar-container {
@@ -85,9 +86,9 @@ header h1 {
 /* Champ de saisie */
 #search-bar-input {
     display: flex;
-    width: 85%;
-    font-family: Anton,sans-serif;
-    font-size: clamp(1rem, 2vw, 24px);
+    width: calc(50*24px);
+    font-size: 16px;
+    font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 100%;
@@ -97,10 +98,23 @@ header h1 {
     box-sizing: border-box;
     border-radius: 5px 0 0 5px; /* Garde les coins arrondis à gauche */
 }
+
+#clearButton {
+    display: none;
+    cursor: pointer;
+    font-size: 36px;
+    color: gray;
+    margin: 0 10px;
+}
+
+#clearButton:hover {
+    color: black;
+}
+
 .search-icon {
-    width: 40px;
+    width: 60px;
     height: 40px;
-    margin-left: 6vw; /* Espace entre l'icône et le bord droit */
+    margin: 0 1vw;
     fill: white; /* Couleur de l'icône */
     pointer-events: none; /* Empêche l'interaction avec l'icône */
     background-color: black;
@@ -191,9 +205,8 @@ header h1 {
 }
 
 .dropdown-button span {
-    /*flex: 0.5;*/
-    font-size: 0.8rem;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 500;
     text-align: left;
     padding-left: 12px;
 }
@@ -292,12 +305,29 @@ header h1 {
 /* item search-icon inside input */
 .itemSearch-icon {
     position: absolute;
-    right: 1.2rem;
+    right: 0.6rem;
     width: 1.2rem;
     height: 1.2rem;
     background-color: white; /* Ensures background remains white */
     pointer-events: none; /* Prevents interaction */
 }
+.itemClear-btn {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 14px;
+    color: gray;
+    background: none;
+    border: none;
+    display: none;
+}
+
+.itemClear-btn:hover {
+    color: black;
+}
+
 
 /* //// 2.0 open  */
 .selected-items-container {
@@ -340,10 +370,10 @@ header h1 {
     display: flex;
     flex-wrap: wrap;
     align-items: stretch; /* Forces all grid items to take the same height */
-    column-gap: 0vw;
+    column-gap: 4vw;
     row-gap: 25px;
-    justify-content : space-around; /* Aligne les recettes au centre */
-    padding: 20px 60px;
+    justify-content : left; /* Aligne les recettes au centre */
+    padding: 20px 30px 20px 60px;
     background-color: #bebebe;
 }
 
@@ -356,7 +386,7 @@ header h1 {
     background: white;
     border: 1px solid #ddd;
     border-radius: 16px;
-    width : 26%;    /* pour afficher 3 cartes par rangée */
+    width : 28%;    /* pour afficher 3 cartes par rangée */
     padding: 10px;
     padding-top: 0;
     margin-top: 10px;
@@ -375,10 +405,11 @@ header h1 {
 }
 
 .recette-card h2 {
-    font-family: Helvetica, sans-serif;
-    margin: 10px 0;
+    font-family: 'anton', sans-serif;
     font-size: 18px;
-    letter-spacing: -1.5px; /* Espacement réduit */
+    font-weight: 400;   
+    margin-top: 24px;
+    /*letter-spacing: -1.5px; *//* Espacement réduit */
     text-align: left;
 }
 .recette-card h3 {
@@ -386,7 +417,7 @@ header h1 {
     color: #666;
     font-size: 12px;
     letter-spacing: -0.8px; /* Espacement réduit */
-    margin-top: 24px;
+    margin-top: 10px;
     text-align: left;
 }
 
@@ -483,6 +514,17 @@ p.duree {
 }
 
 @media (max-width: 980px) {
+    .search-icon {        
+        width: 60px;
+        height: 32px;
+        margin-right: 2vw; /* Espace entre l'icône et le bord droit */
+    }
+    #clearButton {
+        font-size: 28px;
+    }
+    .recipes-container {
+        column-gap: 25px;
+    }
     .recette-card p {
         padding: 10px; 
     }
@@ -503,9 +545,12 @@ p.duree {
         height: 48px;
     }
     .search-icon {        
-        width: 32px;
+        width: 60px;
         height: 32px;
         margin-right: 2vw; /* Espace entre l'icône et le bord droit */
+    }
+    #clearButton {
+        font-size: 16px;
     }
     #rechercheAvancee {
         grid-template-columns: 1fr 1fr;
@@ -528,50 +573,25 @@ p.duree {
  
 }
 
-@media (max-width: 600px) {
-   .site-logo {
-        min-width: 90px;
+@media (max-width: 450px) {
+    .site-logo {
+        top: 20px;
+        width: 22%;
     }
     header h1 {
-        width: 60vw;
-        font-size: clamp(1.2rem, 2.9vw, 34px);
-        letter-spacing: -3px; /* Espacement réduit */
-
+        width: 70vw;
+        font-size: 16px;
     }
     .search-bar-container {
-        width: 65vw;
-        height: 48px; 
+        width: 75vw;
+        height: 40px; 
     }
-    .recipes-container {
-        column-gap: 0px;
-    }
-}
-
-@media (max-width: 550px) {
-    .site-logo {
-        position: absolute;
-        top: 20px;
+    #search-bar-input {
+        font-size: 0.9rem;
     }
     .search-icon {
-        width: 24px;
+        width: 100px;
         height: 24px;
-    }
-    .selected-items-tag {
-        width: 25%;
-    }
-    .recette-card h3,
-    .recette-card p
-    {
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 450px) {
-    header h1 {
-        font-size: clamp(1.1rem, 2.5vw, 28px);
-    }
-    .search-bar-container {
-        height: 40px; 
     }
     #rechercheAvancee {
         grid-template-columns: 1fr;
@@ -579,10 +599,27 @@ p.duree {
         padding: 18px calc(0.5*var(--avancee-margin)) 10px calc(0.5*var(--avancee-margin));
         width: calc(100% - var(--avancee-margin));
     }
+    .selected-items-tag {
+        width: 25%;
+    }
+    .recipes-container {
+        margin: 0 auto;
+    }
     .recette-card {
-        width: 60%;
+        width: 80%;
+        margin: 0 auto;
+
+    }
+    .recette-card h3,
+    .recette-card p
+    {
+        font-size: 0.8rem;
     }
     .itemSearch-icon {
         right: 2rem;
     }
+    .itemClear-btn {
+        right: 3.5rem
+    }
+
 }
